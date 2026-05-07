@@ -1,0 +1,1483 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pozo Cerredo · La cadena de fallos detrás de la mina</title>
+<meta name="description" content="Narrativa del Pozo Cerredo: del accidente del 31 de marzo de 2025 a la cadena de transmisiones, supresiones de servicios y garantías insuficientes que el Informe de la Inspección General de Servicios pone sobre la mesa.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0c0d10;
+    --bg-soft:#15171c;
+    --bg-card:#1a1d23;
+    --ink:#ececec;
+    --ink-dim:#a4a7ad;
+    --ink-faint:#6c7079;
+    --accent:#e63946;
+    --accent-2:#f1a208;
+    --accent-3:#43aa8b;
+    --line:#2a2e36;
+    --serif:"Fraunces", Georgia, "Times New Roman", serif;
+    --sans:"Inter", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:var(--sans);
+    font-size:17px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  a{color:var(--ink);text-decoration:underline;text-decoration-color:var(--accent);text-underline-offset:3px}
+  a:hover{color:var(--accent)}
+  .wrap{max-width:780px;margin:0 auto;padding:0 24px}
+  .wrap-wide{max-width:1100px;margin:0 auto;padding:0 24px}
+
+  /* ========== Top bar ========== */
+  .topbar{
+    position:fixed;top:0;left:0;right:0;z-index:50;
+    backdrop-filter:saturate(140%) blur(10px);
+    background:rgba(12,13,16,.7);
+    border-bottom:1px solid transparent;
+    transition:border-color .3s;
+  }
+  .topbar.scrolled{border-bottom-color:var(--line)}
+  .topbar .row{display:flex;align-items:center;justify-content:space-between;height:54px}
+  .brand{font-family:var(--serif);font-weight:600;font-size:15px;letter-spacing:.02em}
+  .brand em{color:var(--accent);font-style:normal}
+  .progress{position:absolute;left:0;bottom:-1px;height:2px;background:var(--accent);width:0;transition:width .1s linear}
+
+  /* ========== Hero ========== */
+  .hero{
+    min-height:100vh;
+    display:flex;align-items:center;
+    position:relative;
+    padding:120px 0 80px;
+    background:var(--bg);
+    overflow:hidden;
+    isolation:isolate;
+  }
+  .hero-map{
+    position:absolute;inset:0;z-index:0;
+    filter:contrast(1.05) saturate(.85) brightness(.95);
+    opacity:0;
+    transition:opacity 1.2s ease-out;
+  }
+  .hero-map.ready{opacity:.85}
+  .hero-map .maplibregl-ctrl-attrib,
+  .hero-map .maplibregl-ctrl-bottom-right,
+  .hero-map .maplibregl-ctrl-bottom-left{
+    background:rgba(12,13,16,.55);
+  }
+  .hero-map .maplibregl-ctrl-attrib a,
+  .hero-map .maplibregl-ctrl-attrib{
+    color:var(--ink-faint);font-size:10px;
+  }
+  .hero-veil{
+    position:absolute;inset:0;z-index:1;pointer-events:none;
+    background:
+      radial-gradient(ellipse at 30% 20%, rgba(230,57,70,.18), transparent 55%),
+      radial-gradient(ellipse at 80% 80%, rgba(241,162,8,.10), transparent 60%),
+      radial-gradient(ellipse at 50% 55%, rgba(12,13,16,.55) 0%, rgba(12,13,16,.85) 65%, rgba(12,13,16,.95) 100%);
+  }
+  .hero::before{
+    content:"";position:absolute;inset:0;z-index:2;
+    background-image:
+      linear-gradient(transparent 95%, rgba(255,255,255,.05) 95%),
+      linear-gradient(90deg, transparent 95%, rgba(255,255,255,.05) 95%);
+    background-size:36px 36px;
+    mask-image:radial-gradient(ellipse at center, #000 30%, transparent 80%);
+    pointer-events:none;
+  }
+  .hero .wrap{position:relative;z-index:3}
+  .hero .scrollhint{z-index:3}
+  /* fade map out into the next section */
+  .hero::after{
+    content:"";position:absolute;left:0;right:0;bottom:0;height:120px;z-index:2;
+    background:linear-gradient(180deg, transparent, var(--bg));
+    pointer-events:none;
+  }
+  .kicker{
+    display:inline-block;
+    font-size:12px;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--accent);
+    padding:6px 10px;
+    border:1px solid var(--accent);
+    border-radius:2px;
+    margin-bottom:28px;
+    opacity:0;transform:translateY(8px);
+    animation:fadeUp .8s .1s forwards;
+  }
+  h1.lede{
+    font-family:var(--serif);
+    font-weight:600;
+    font-size:clamp(38px, 6.4vw, 78px);
+    line-height:1.05;
+    letter-spacing:-.01em;
+    margin:0 0 28px;
+    opacity:0;transform:translateY(14px);
+    animation:fadeUp 1s .25s forwards;
+  }
+  h1.lede .num{color:var(--accent);font-style:italic;font-weight:800}
+  .hero p.standfirst{
+    font-size:clamp(17px, 1.8vw, 21px);
+    color:var(--ink-dim);
+    max-width:620px;
+    margin:0 0 40px;
+    opacity:0;transform:translateY(14px);
+    animation:fadeUp 1s .45s forwards;
+  }
+  .meta{
+    display:flex;flex-wrap:wrap;gap:24px;
+    color:var(--ink-faint);font-size:13px;letter-spacing:.04em;
+    opacity:0;animation:fadeUp 1s .65s forwards;
+  }
+  .meta span strong{color:var(--ink-dim);font-weight:500;display:block;font-size:11px;text-transform:uppercase;letter-spacing:.18em;margin-bottom:3px}
+  .scrollhint{
+    position:absolute;bottom:30px;left:50%;transform:translateX(-50%);
+    font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-faint);
+    opacity:0;animation:fadeUp 1s 1s forwards, bob 2.4s 1.6s ease-in-out infinite;
+  }
+
+  @keyframes fadeUp{to{opacity:1;transform:translateY(0)}}
+  @keyframes bob{0%,100%{transform:translate(-50%,0)}50%{transform:translate(-50%,8px)}}
+
+  /* ========== Section ========== */
+  section{padding:100px 0;position:relative}
+  .eyebrow{
+    font-size:12px;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--accent-2);margin:0 0 18px;font-weight:600;
+  }
+  h2{
+    font-family:var(--serif);font-weight:600;
+    font-size:clamp(28px, 3.6vw, 44px);
+    line-height:1.15;letter-spacing:-.005em;
+    margin:0 0 22px;
+  }
+  h3{
+    font-family:var(--serif);font-weight:600;
+    font-size:22px;line-height:1.25;margin:0 0 10px;
+  }
+  p{margin:0 0 18px;color:#dadce1}
+  .lead{font-size:19px;color:var(--ink)}
+  .reveal{opacity:0;transform:translateY(24px);transition:opacity .9s ease, transform .9s ease}
+  .reveal.in{opacity:1;transform:translateY(0)}
+
+  /* ========== Map section ========== */
+  .map-section{
+    background:linear-gradient(180deg, var(--bg) 0%, var(--bg-soft) 100%);
+    border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+    padding:90px 0;
+  }
+  .map-grid{
+    display:grid;grid-template-columns:1.1fr 1fr;gap:56px;align-items:center;
+  }
+  @media (max-width:820px){.map-grid{grid-template-columns:1fr;gap:30px}}
+  .static-map{
+    width:100%;
+    aspect-ratio: 16 / 11;
+    border:1px solid var(--line);
+    border-radius:6px;
+    overflow:hidden;
+    position:relative;
+    background:var(--bg-soft);
+  }
+  .static-map .maplibregl-canvas{outline:none}
+  .static-map .maplibregl-ctrl-attrib{
+    background:rgba(12,13,16,.6);
+  }
+  .static-map .maplibregl-ctrl-attrib,
+  .static-map .maplibregl-ctrl-attrib a{
+    color:var(--ink-faint);font-size:10px;
+  }
+  .static-map-label{
+    position:absolute;left:14px;top:14px;z-index:5;
+    background:rgba(12,13,16,.78);
+    border:1px solid var(--line);
+    border-radius:4px;
+    padding:8px 12px;
+    font-size:11px;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--ink-dim);
+    backdrop-filter:blur(4px);
+  }
+  .static-map-label strong{color:var(--accent);font-weight:600}
+  .map-svg{
+    width:100%;
+    height:auto;
+    display:block;
+    overflow:visible;
+  }
+  .map-svg #asturias-concejos path{
+    fill:var(--bg-card);
+    stroke:rgba(255,255,255,.07);
+    stroke-width:.4;
+    vector-effect:non-scaling-stroke;
+    transition:fill .4s;
+  }
+  .map-svg #asturias-concejos.lit path{fill:#22262e}
+  .map-svg .degana-glow{
+    fill:rgba(230,57,70,.18);
+    stroke:rgba(230,57,70,.55);
+    stroke-width:1.2;
+    vector-effect:non-scaling-stroke;
+  }
+  .map-svg .city{fill:var(--ink-faint)}
+  .map-svg .city-label{
+    fill:var(--ink-faint);font-family:var(--sans);font-size:9px;
+    letter-spacing:.04em;
+  }
+  .map-svg .marker-halo{
+    fill:var(--accent);
+    transform-origin:center;
+    animation:halo 2.6s ease-out infinite;
+  }
+  .map-svg .marker-halo.h2{animation-delay:1s}
+  .map-svg .marker{fill:var(--accent);stroke:#fff;stroke-width:1.2}
+  .map-svg .marker-label{
+    fill:var(--ink);font-family:var(--serif);font-weight:600;font-size:12px;
+  }
+  .map-svg .marker-sub{
+    fill:var(--accent);font-family:var(--sans);font-size:8.5px;
+    letter-spacing:.18em;text-transform:uppercase;font-weight:600;
+  }
+  .map-svg .sea-label{
+    fill:var(--ink-faint);font-family:var(--serif);font-style:italic;
+    font-size:12px;letter-spacing:.1em;opacity:.45;
+  }
+  .map-svg .frontier-label{
+    fill:var(--ink-faint);font-family:var(--sans);font-size:8.5px;
+    letter-spacing:.16em;text-transform:uppercase;opacity:.5;
+  }
+  @keyframes halo{
+    0%{r:4;opacity:.45}
+    100%{r:24;opacity:0}
+  }
+  .map-coords{
+    display:flex;flex-wrap:wrap;gap:18px 28px;margin-top:24px;
+    font-size:13px;color:var(--ink-faint);
+  }
+  .map-coords strong{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.18em;color:var(--ink-dim);font-weight:500;margin-bottom:3px}
+
+  /* ========== About the report ========== */
+  .about{padding:100px 0}
+  .about-intro{max-width:760px}
+  .about-grid{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:36px;
+  }
+  @media (max-width:820px){.about-grid{grid-template-columns:1fr 1fr}}
+  @media (max-width:540px){.about-grid{grid-template-columns:1fr}}
+  .about-cell{
+    background:var(--bg-card);border:1px solid var(--line);
+    border-radius:6px;padding:22px;
+  }
+  .about-cell h4{
+    margin:0 0 10px;font-family:var(--serif);font-size:17px;
+    color:var(--accent-2);
+  }
+  .about-cell p{margin:0;color:var(--ink-dim);font-size:14px;line-height:1.55}
+
+  .glossary{margin-top:48px}
+  .glossary h3{margin-bottom:8px}
+  .glossary .lead-sm{color:var(--ink-dim);font-size:14px;margin-bottom:18px}
+  .gloss-grid{
+    display:grid;grid-template-columns:repeat(2,1fr);gap:0;
+    border-top:1px solid var(--line);
+  }
+  @media (max-width:720px){.gloss-grid{grid-template-columns:1fr}}
+  .gloss-item{
+    padding:18px 20px;border-bottom:1px solid var(--line);
+    border-right:1px solid var(--line);
+  }
+  .gloss-item:nth-child(2n){border-right:none}
+  @media (max-width:720px){.gloss-item{border-right:none}}
+  .gloss-term{
+    font-family:var(--serif);font-weight:600;color:var(--accent);font-size:15px;
+    letter-spacing:.04em;margin-bottom:4px;
+  }
+  .gloss-def{font-size:14px;color:var(--ink-dim);line-height:1.55;margin:0}
+
+  /* ========== Estructura debilitada ========== */
+  .structure{
+    background:
+      radial-gradient(ellipse at 80% 100%, rgba(241,162,8,.08), transparent 55%),
+      var(--bg-soft);
+    border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+  }
+  .structure-grid{
+    display:grid;grid-template-columns:1.2fr 1fr;gap:48px;align-items:center;
+  }
+  @media (max-width:820px){.structure-grid{grid-template-columns:1fr;gap:32px}}
+  .structure-text h2{margin-top:14px}
+  .stat-block{
+    background:var(--bg-card);
+    border:1px solid var(--line);
+    border-left:3px solid var(--accent-2);
+    border-radius:6px;
+    padding:26px 28px;
+    margin-bottom:14px;
+  }
+  .stat-block--alt{border-left-color:var(--accent)}
+  .stat-num{
+    font-family:var(--serif);font-weight:800;
+    font-size:clamp(54px,7vw,84px);line-height:1;
+    color:var(--accent-2);letter-spacing:-.02em;
+    margin-bottom:6px;font-feature-settings:"tnum";
+  }
+  .stat-cap{
+    font-size:11px;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--ink-faint);margin-bottom:14px;font-weight:600;
+  }
+  .stat-tag{
+    display:inline-block;font-size:11px;letter-spacing:.18em;text-transform:uppercase;
+    padding:5px 10px;border-radius:2px;margin-bottom:12px;font-weight:600;
+    background:rgba(230,57,70,.14);color:var(--accent);border:1px solid rgba(230,57,70,.35);
+  }
+  .stat-text{margin:0;color:var(--ink-dim);font-size:15px;line-height:1.55}
+  .stat-src{margin-top:10px;font-size:11px;color:var(--ink-faint);letter-spacing:.06em}
+
+  /* ========== Alerta ignorada ========== */
+  .alert{
+    background:
+      radial-gradient(ellipse at 20% 0%, rgba(230,57,70,.08), transparent 55%),
+      var(--bg);
+    border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+  }
+  .alert-grid{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:36px;
+  }
+  @media (max-width:820px){.alert-grid{grid-template-columns:1fr}}
+  .alert-card{
+    background:var(--bg-card);
+    border:1px solid var(--line);
+    border-radius:6px;
+    padding:24px;
+    position:relative;
+    transition:transform .35s, border-color .35s;
+  }
+  .alert-card:hover{transform:translateY(-3px);border-color:rgba(230,57,70,.4)}
+  .alert-card--key{
+    border-color:rgba(230,57,70,.45);
+    background:linear-gradient(180deg, rgba(230,57,70,.06) 0%, var(--bg-card) 100%);
+  }
+  .alert-card--key::before{
+    content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--accent);
+    border-radius:6px 0 0 6px;
+  }
+  .alert-date{
+    font-family:var(--sans);font-weight:600;font-size:11px;letter-spacing:.16em;
+    color:var(--accent);text-transform:uppercase;margin-bottom:10px;
+  }
+  .alert-title{
+    font-family:var(--serif);font-weight:600;font-size:18px;line-height:1.3;
+    margin:0 0 10px;color:var(--ink);
+  }
+  .alert-text{
+    color:var(--ink-dim);font-size:14.5px;line-height:1.55;margin:0 0 12px;
+  }
+  .alert-src{
+    font-size:11px;color:var(--ink-faint);letter-spacing:.06em;margin:0;
+  }
+
+  /* ========== Two big numbers ========== */
+  .impact{
+    background:var(--bg-soft);
+    border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+  }
+  .impact-grid{display:grid;grid-template-columns:1fr 1fr;gap:0}
+  @media (max-width:720px){.impact-grid{grid-template-columns:1fr}}
+  .impact-cell{padding:60px 40px;border-right:1px solid var(--line)}
+  .impact-cell:last-child{border-right:none}
+  @media (max-width:720px){
+    .impact-cell{border-right:none;border-bottom:1px solid var(--line)}
+    .impact-cell:last-child{border-bottom:none}
+  }
+  .big-num{
+    font-family:var(--serif);font-weight:800;
+    font-size:clamp(64px, 9vw, 120px);line-height:1;
+    color:var(--accent);
+    letter-spacing:-.02em;
+    margin:0 0 8px;
+    font-feature-settings:"tnum";
+  }
+  .big-num.amber{color:var(--accent-2)}
+  .big-cap{font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:16px}
+  .big-desc{color:var(--ink-dim);font-size:15px}
+
+  /* ========== Timeline ========== */
+  .timeline{
+    position:relative;
+    padding-left:38px;
+    border-left:2px solid var(--line);
+    margin-top:40px;
+  }
+  .t-item{
+    position:relative;padding:0 0 50px 0;
+  }
+  .t-item:last-child{padding-bottom:0}
+  .t-item::before{
+    content:"";position:absolute;left:-46px;top:6px;
+    width:14px;height:14px;border-radius:50%;
+    background:var(--bg);border:2px solid var(--line);
+    transition:all .4s;
+  }
+  .t-item.in::before{background:var(--accent);border-color:var(--accent);box-shadow:0 0 0 6px rgba(230,57,70,.15)}
+  .t-item.t-warn::before{background:var(--accent-2);border-color:var(--accent-2)}
+  .t-item.t-warn.in::before{box-shadow:0 0 0 6px rgba(241,162,8,.18)}
+  .t-date{
+    font-family:var(--sans);font-weight:600;font-size:13px;letter-spacing:.14em;
+    color:var(--ink-faint);text-transform:uppercase;margin-bottom:6px;
+  }
+  .t-item.t-warn .t-date{color:var(--accent-2)}
+  .t-item.t-crit .t-date{color:var(--accent)}
+  .t-title{font-family:var(--serif);font-weight:600;font-size:19px;margin:0 0 6px;line-height:1.3}
+  .t-text{color:var(--ink-dim);font-size:15px;margin:0}
+  .t-tag{
+    display:inline-block;font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+    padding:3px 8px;border-radius:2px;margin-left:8px;vertical-align:2px;
+    background:rgba(230,57,70,.12);color:var(--accent);border:1px solid rgba(230,57,70,.3);
+  }
+
+  /* ========== Findings — confrontation ========== */
+  .findings-head{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:36px}
+  .findings-head h2{margin:0;max-width:680px}
+  .col-wrap{
+    display:grid;grid-template-columns:1fr 1fr;gap:0;
+    border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+    background:var(--bg-card);
+  }
+  @media (max-width:820px){.col-wrap{grid-template-columns:1fr}}
+  .col{
+    padding:34px 32px;
+    border-right:1px solid var(--line);
+  }
+  .col:last-child{border-right:none}
+  @media (max-width:820px){
+    .col{border-right:none;border-bottom:1px solid var(--line)}
+    .col:last-child{border-bottom:none}
+  }
+  .col-head{
+    display:flex;align-items:center;gap:14px;
+    padding-bottom:18px;margin-bottom:20px;border-bottom:1px solid var(--line);
+  }
+  .col-pill{
+    font-size:11px;letter-spacing:.18em;text-transform:uppercase;
+    padding:5px 10px;border-radius:2px;font-weight:600;
+  }
+  .col.adm .col-pill{background:rgba(230,57,70,.14);color:var(--accent);border:1px solid rgba(230,57,70,.35)}
+  .col.emp .col-pill{background:rgba(241,162,8,.14);color:var(--accent-2);border:1px solid rgba(241,162,8,.35)}
+  .col-head h3{margin:0;font-size:20px}
+  .col-sub{color:var(--ink-faint);font-size:13px;margin:-12px 0 18px}
+  .col-list{list-style:none;margin:0;padding:0}
+  .col-list li{
+    padding:14px 0 14px 30px;
+    border-bottom:1px dashed var(--line);
+    position:relative;
+    color:var(--ink-dim);font-size:14.5px;line-height:1.55;
+  }
+  .col-list li:last-child{border-bottom:none}
+  .col-list li::before{
+    content:counter(i, decimal-leading-zero);
+    counter-increment:i;
+    position:absolute;left:0;top:14px;
+    font-family:var(--serif);font-weight:600;font-size:13px;
+    letter-spacing:.04em;
+  }
+  .col.adm .col-list{counter-reset:i}
+  .col.emp .col-list{counter-reset:i}
+  .col.adm .col-list li::before{color:var(--accent)}
+  .col.emp .col-list li::before{color:var(--accent-2)}
+  .col-list li strong{color:var(--ink);font-weight:600}
+  .col-list li .src{
+    display:block;margin-top:5px;font-size:11px;color:var(--ink-faint);
+    letter-spacing:.06em;
+  }
+
+  /* ========== PDF source links ========== */
+  a.src, a.alert-src, a.stat-src{
+    color:var(--ink-faint);
+    text-decoration:none;
+    border-bottom:1px dotted rgba(241,162,8,.35);
+    padding-bottom:1px;
+    transition:color .2s, border-color .2s;
+  }
+  a.src:hover, a.alert-src:hover, a.stat-src:hover{
+    color:var(--accent-2);
+    border-bottom-color:var(--accent-2);
+  }
+  a.src::before, a.alert-src::before, a.stat-src::before{
+    content:"📄 ";
+    margin-right:3px;
+    font-size:10px;
+    opacity:.7;
+    filter:grayscale(1);
+  }
+  a.src:hover::before, a.alert-src:hover::before, a.stat-src:hover::before{
+    filter:none;opacity:1;
+  }
+  /* inline pdf-page reference */
+  a.pdf-ref{
+    color:var(--accent-2);
+    text-decoration:none;
+    border-bottom:1px dotted rgba(241,162,8,.45);
+    font-variant-numeric:tabular-nums;
+    white-space:nowrap;
+  }
+  a.pdf-ref:hover{color:var(--accent);border-bottom-color:var(--accent)}
+
+  /* ========== Modelo del abandono ========== */
+  .model-grid{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:36px;
+  }
+  @media (max-width:820px){.model-grid{grid-template-columns:1fr}}
+  .model-cell{
+    background:var(--bg-card);
+    border:1px solid var(--line);
+    border-radius:6px;
+    padding:24px;
+    position:relative;
+  }
+  .model-num{
+    font-family:var(--serif);font-style:italic;font-weight:800;
+    color:var(--accent-2);font-size:30px;line-height:1;margin-bottom:14px;
+    opacity:.65;
+  }
+  .model-cell h3{font-size:18px;margin-bottom:8px;color:var(--ink)}
+  .model-cell p{margin:0 0 14px;color:var(--ink-dim);font-size:14.5px;line-height:1.55}
+  .model-src{font-size:11px;color:var(--ink-faint);letter-spacing:.06em}
+
+  /* ========== Quote / pull ========== */
+  .pull{
+    border-left:3px solid var(--accent);
+    padding:6px 0 6px 22px;
+    margin:34px 0;
+    font-family:var(--serif);font-style:italic;font-size:22px;line-height:1.45;
+    color:var(--ink);
+  }
+  .pull cite{display:block;margin-top:10px;font-style:normal;font-family:var(--sans);font-size:13px;color:var(--ink-faint);letter-spacing:.05em}
+
+  /* ========== Bucle de impunidad ========== */
+  .bucle{
+    background:
+      radial-gradient(ellipse at 50% 0%, rgba(241,162,8,.06), transparent 55%),
+      var(--bg-soft);
+    border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+  }
+  .acts{
+    display:grid;
+    grid-template-columns:1fr 24px 1fr 24px 1fr;
+    gap:18px;
+    align-items:stretch;
+    margin-top:46px;
+  }
+  @media (max-width:920px){
+    .acts{grid-template-columns:1fr;gap:14px}
+    .act-arrow{transform:rotate(90deg);justify-self:center}
+  }
+  .act{
+    background:var(--bg-card);
+    border:1px solid var(--line);
+    border-top:3px solid var(--accent-2);
+    border-radius:6px;
+    padding:28px 26px 24px;
+    display:flex;flex-direction:column;
+    position:relative;
+    transition:transform .35s, border-color .35s;
+  }
+  .act:hover{transform:translateY(-3px);border-color:rgba(241,162,8,.45)}
+  .act--tragic{border-top-color:var(--accent)}
+  .act--tragic:hover{border-color:rgba(230,57,70,.45)}
+  .act-roman{
+    font-family:var(--serif);font-style:italic;font-weight:800;
+    color:var(--accent-2);font-size:46px;line-height:1;
+    letter-spacing:-.02em;margin-bottom:6px;
+  }
+  .act--tragic .act-roman{color:var(--accent)}
+  .act-period{
+    font-size:11px;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--ink-faint);margin-bottom:14px;font-weight:600;
+  }
+  .act--tragic .act-period{color:var(--accent)}
+  .act-title{
+    font-family:var(--serif);font-weight:600;font-size:21px;line-height:1.25;
+    margin:0 0 18px;color:var(--ink);
+  }
+  .act-dl{margin:0;padding:0}
+  .act-dl dt{
+    font-size:11px;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--accent-2);font-weight:600;margin-top:14px;
+  }
+  .act--tragic .act-dl dt{color:var(--accent)}
+  .act-dl dt:first-child{margin-top:0}
+  .act-dl dd{
+    margin:5px 0 0;
+    color:var(--ink-dim);font-size:14.5px;line-height:1.55;
+  }
+  .act-dl dd em{color:var(--ink);font-style:italic}
+  .act-arrow{
+    align-self:center;justify-self:center;
+    font-family:var(--serif);font-size:34px;
+    color:var(--accent-2);font-weight:600;line-height:1;
+    opacity:.7;
+    animation:nudge 2.4s ease-in-out infinite;
+  }
+  @keyframes nudge{
+    0%,100%{transform:translateX(0)}
+    50%{transform:translateX(4px)}
+  }
+  @media (max-width:920px){
+    @keyframes nudge{
+      0%,100%{transform:rotate(90deg) translateX(0)}
+      50%{transform:rotate(90deg) translateX(4px)}
+    }
+  }
+  .bucle-resumen{
+    margin-top:40px;
+    background:var(--bg-card);
+    border:1px solid var(--line);
+    border-left:3px solid var(--accent);
+    border-radius:6px;
+    padding:24px 28px;
+    color:var(--ink);
+    font-size:17px;line-height:1.55;
+  }
+
+  /* ========== Knot section ========== */
+  .knot{
+    background:
+      radial-gradient(ellipse at 80% 0%, rgba(230,57,70,.10), transparent 60%),
+      var(--bg-soft);
+    border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+  }
+  .knot h2 em{color:var(--accent);font-style:normal}
+  .paradox{
+    display:grid;grid-template-columns:1fr auto 1fr;gap:24px;align-items:center;
+    margin:50px 0 30px;
+  }
+  @media (max-width:720px){.paradox{grid-template-columns:1fr;text-align:center}}
+  .pa-cell{
+    background:var(--bg-card);border:1px solid var(--line);border-radius:6px;
+    padding:28px;
+  }
+  .pa-cell h4{margin:0 0 10px;font-family:var(--serif);font-size:18px;color:var(--accent-2)}
+  .pa-cell p{margin:0;color:var(--ink-dim);font-size:15px}
+  .pa-vs{
+    font-family:var(--serif);font-style:italic;font-weight:600;
+    color:var(--accent);font-size:22px;text-align:center;
+  }
+
+  /* ========== Limits / unanswered ========== */
+  .limits{
+    border:1px dashed var(--line);
+    padding:32px;
+    border-radius:6px;
+    background:rgba(255,255,255,.015);
+  }
+  .limits h3{color:var(--accent-2)}
+  .limits ul{margin:0;padding-left:20px;color:var(--ink-dim)}
+  .limits li{margin-bottom:8px}
+
+  /* ========== Los dos accidentes ========== */
+  .accidents{
+    background:
+      radial-gradient(ellipse at 100% 0%, rgba(230,57,70,.07), transparent 55%),
+      var(--bg);
+    border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+  }
+  .acc-grid{
+    display:grid;grid-template-columns:1fr 1fr;gap:0;
+    border:1px solid var(--line);border-radius:6px;
+    background:var(--bg-card);overflow:hidden;
+    margin-top:40px;
+  }
+  @media (max-width:820px){.acc-grid{grid-template-columns:1fr}}
+  .acc-card{
+    padding:34px 32px;
+    border-right:1px solid var(--line);
+    position:relative;
+  }
+  .acc-card:last-child{border-right:none}
+  @media (max-width:820px){
+    .acc-card{border-right:none;border-bottom:1px solid var(--line)}
+    .acc-card:last-child{border-bottom:none}
+  }
+  .acc-date{
+    font-family:var(--sans);font-weight:600;font-size:13px;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--accent);margin-bottom:0;
+  }
+  .acc-time{font-size:12px;color:var(--ink-faint);letter-spacing:.1em;font-weight:400}
+  .acc-title{
+    font-family:var(--serif);font-size:22px;font-weight:600;line-height:1.25;
+    margin:14px 0 18px;color:var(--ink);
+  }
+  .acc-toll{
+    display:flex;gap:24px;flex-wrap:wrap;
+    padding:16px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+    margin-bottom:20px;
+  }
+  .acc-toll .num{
+    font-family:var(--serif);font-weight:800;font-size:34px;color:var(--accent);
+    line-height:1;display:block;margin-bottom:4px;
+  }
+  .acc-toll .lbl{
+    font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-faint);
+  }
+  .acc-body{color:var(--ink-dim);font-size:15px;line-height:1.65}
+  .acc-body p{margin:0 0 12px}
+  .acc-body p:last-child{margin:0}
+  .acc-meta{
+    margin-top:20px;padding-top:14px;border-top:1px dashed var(--line);
+    font-size:13px;color:var(--ink-faint);line-height:1.55;
+  }
+  .acc-meta strong{color:var(--ink-dim);font-weight:600}
+  .same-place{
+    display:flex;align-items:center;justify-content:center;gap:10px;
+    margin:30px auto 0;padding:16px 22px;max-width:640px;
+    background:rgba(230,57,70,.06);border:1px solid rgba(230,57,70,.22);
+    border-radius:6px;
+    font-family:var(--serif);font-size:16px;color:var(--ink);
+    text-align:center;
+  }
+  .same-place strong{color:var(--accent);font-weight:700}
+
+  /* ========== Footer ========== */
+  footer{
+    padding:60px 0 40px;
+    border-top:1px solid var(--line);
+    color:var(--ink-faint);font-size:13px;
+  }
+  footer .row{display:flex;flex-wrap:wrap;gap:30px;justify-content:space-between}
+  footer p{color:var(--ink-faint);margin:0 0 8px}
+  footer strong{color:var(--ink-dim)}
+
+  /* anchor offsets for fixed bar */
+  section[id]{scroll-margin-top:70px}
+
+  ::selection{background:var(--accent);color:#fff}
+</style>
+</head>
+<body>
+
+<header class="topbar" id="topbar">
+  <div class="wrap-wide row">
+    <div class="brand">Pozo <em>Cerredo</em></div>
+    <nav style="display:flex;gap:18px;font-size:13px;color:var(--ink-dim);flex-wrap:wrap;justify-content:flex-end">
+      <a href="#donde-esta" style="text-decoration:none">Mapa</a>
+      <a href="#accidentes" style="text-decoration:none">Accidentes</a>
+      <a href="#que-es-esto" style="text-decoration:none">El informe</a>
+      <a href="#estructura" style="text-decoration:none">Estructura</a>
+      <a href="#alerta" style="text-decoration:none">La alerta</a>
+      <a href="#cronologia" style="text-decoration:none">Cronología</a>
+      <a href="#hallazgos" style="text-decoration:none">Hallazgos</a>
+      <a href="#modelo" style="text-decoration:none">El modelo</a>
+      <a href="#bucle" style="text-decoration:none">El bucle</a>
+      <a href="#nudo" style="text-decoration:none">El nudo</a>
+    </nav>
+  </div>
+  <div class="progress" id="progress"></div>
+</header>
+
+<!-- ============== HERO ============== -->
+<section class="hero">
+  <div class="hero-map" id="hero-map" aria-hidden="true"></div>
+  <div class="hero-veil" aria-hidden="true"></div>
+  <div class="wrap">
+    <span class="kicker">Investigación · Asturias</span>
+    <h1 class="lede">El 31 de marzo de 2025, <span class="num">cinco</span> mineros fallecieron en Cerredo</h1>
+    <p class="standfirst">Un pozo donde los problemas venían de mucho antes: avisos ignorados, transmisiones de derechos opacas y un servicio de inspección que se quedó sin medios para vigilar lo que ocurría bajo tierra en Cerredo.</p>
+    <div class="meta">
+      <span><strong>Localización</strong>Pozo Cerredo · Degaña (Asturias)</span>
+      <span><strong>Documento base</strong><a href="informe_minas.pdf" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;border-bottom:1px dotted var(--ink-faint)">Informe IGS · 27/03/2026 (PDF)</a></span>
+      <span><strong>Páginas</strong>317</span>
+    </div>
+  </div>
+  <div class="scrollhint">↓ Cómo se llegó hasta aquí</div>
+</section>
+
+<!-- ============== DÓNDE ESTÁ ============== -->
+<section class="map-section" id="donde-esta">
+  <div class="wrap-wide">
+    <div class="map-grid">
+      <div class="reveal">
+        <div class="static-map" id="static-map" role="img" aria-label="Mapa de Asturias con la ubicación del Pozo Cerredo en Degaña">
+          <div class="static-map-label"><strong>Pozo Cerredo</strong> · Degaña (Asturias)</div>
+        </div>
+      </div>
+
+      <div class="reveal">
+        <p class="eyebrow">Dónde está</p>
+        <h2 style="font-size:clamp(26px,3vw,36px)">En el suroeste extremo de Asturias</h2>
+        <p>El Pozo Cerredo se encuentra en el concejo de <strong>Degaña</strong>, en una franja montañosa que limita con León al sur y con Cangas del Narcea al norte. Es la vertiente más profunda de la antigua cuenca minera asturiana, con caminos largos hasta Oviedo y unas comunicaciones que han marcado durante décadas la velocidad —y los costes— de cualquier inspección administrativa.</p>
+        <p>Forma parte del histórico <strong>Grupo Cerredo</strong>, conjunto de concesiones mineras de la sección D) que durante años explotaron Coto Minero Cantábrico, Compañía Minera Astur Leonesa y, después del cierre formal, las sociedades sucesoras.</p>
+        <div class="map-coords">
+          <div><strong>Concejo</strong>Degaña</div>
+          <div><strong>Comarca</strong>Suroccidente</div>
+          <div><strong>Tipo</strong>Mina subterránea de carbón</div>
+          <div><strong>Sección</strong>D — Grupo Cerredo</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== LOS DOS ACCIDENTES ============== -->
+<section class="accidents" id="accidentes">
+  <div class="wrap-wide" style="padding-top:90px;padding-bottom:90px">
+    <p class="eyebrow reveal">Los dos accidentes mortales</p>
+    <h2 class="reveal" style="max-width:780px">Dos siniestros separados por 949 días, en el mismo punto exacto</h2>
+    <p class="lead reveal" style="max-width:780px">Antes de entrar en los expedientes administrativos, conviene fijar lo que ocurrió bajo tierra. Las dos veces que Cerredo apareció en titulares por motivos mortales, el desenlace fue en el mismo lugar: el <strong>Piso 3º (Mangueiro)</strong>.</p>
+
+    <div class="acc-grid">
+      <div class="acc-card reveal">
+        <div class="acc-date">25 / 08 / 2022 <span class="acc-time">· 16:15 h</span></div>
+        <h3 class="acc-title">Accidente del camión dúmper</h3>
+        <div class="acc-toll">
+          <div><span class="num">1</span><span class="lbl">Fallecido</span></div>
+          <div><span class="num">1</span><span class="lbl">Amputación</span></div>
+        </div>
+        <div class="acc-body">
+          <p>Un camión <strong>dúmper articulado CASE A330</strong> sufre un accidente en las inmediaciones del Piso 3º (Mangueiro). Un trabajador fallece y otro queda con amputación de la pierna izquierda.</p>
+          <p>La administración minera del Principado paraliza temporalmente toda actividad en el Grupo Cerredo y abre una investigación. Cuatro meses después, su informe técnico (Informe 1/22, 21/12/2022) determina que el carbón que transportaba el dúmper <em>"procede de la plaza del 6º piso… para la que no existe autorización de explotación"</em>.</p>
+          <p>La explotación, en teoría, ya no debería estar produciendo carbón: la concesión vigente solo amparaba trabajos de cierre y rehabilitación. El dúmper queda preservado en el lugar del accidente. <a class="pdf-ref" href="informe_minas.pdf#page=200" target="_blank" rel="noopener">pág. 200 ↗</a></p>
+        </div>
+        <p class="acc-meta"><strong>Titular en esa fecha:</strong> COMBAYL S.L. — había recibido la concesión cuatro meses antes (21/04/2022) con un "Plan de cierre y abandono" que no contemplaba labores de explotación, solo trabajos compatibles con la rehabilitación.</p>
+      </div>
+
+      <div class="acc-card reveal">
+        <div class="acc-date">31 / 03 / 2025</div>
+        <h3 class="acc-title">El accidente que dispara la inspección extraordinaria</h3>
+        <div class="acc-toll">
+          <div><span class="num">5</span><span class="lbl">Fallecidos</span></div>
+        </div>
+        <div class="acc-body">
+          <p>Cinco mineros mueren en el mismo Piso 3º (Mangueiro), dos años y siete meses después del accidente del dúmper.</p>
+          <p>En esa misma zona, una inspección administrativa de septiembre de 2024 ya había constatado que se realizaban "trabajos de recuperación de material de interior". La extracción no autorizada que el informe técnico de 2022 había detectado seguía sin desencadenar consecuencias administrativas firmes.</p>
+          <p>Tras el accidente, la Consejería de Presidencia eleva un requerimiento de actuación inspectora extraordinaria. El resultado es el informe de 317 páginas que esta pieza analiza. <a class="pdf-ref" href="informe_minas.pdf#page=298" target="_blank" rel="noopener">pág. 298 ↗</a></p>
+        </div>
+        <p class="acc-meta"><strong>Titular en esa fecha:</strong> Blue Solving S.L. — sociedad de reciente creación que había recibido las concesiones por transmisión desde COMBAYL en noviembre de 2023.</p>
+      </div>
+    </div>
+
+    <div class="same-place reveal">
+      <span>Mismo Piso 3º (Mangueiro) · <strong>949 días</strong> entre uno y otro · misma explotación, distintos titulares</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============== DE DÓNDE SALE ESTO ============== -->
+<section class="about" id="que-es-esto">
+  <div class="wrap">
+    <p class="eyebrow reveal">De dónde sale esto</p>
+    <h2 class="reveal" style="max-width:760px">Toda esta historia se cuenta a partir de un único documento: el informe que la Inspección General firmó un año después del accidente</h2>
+
+    <div class="about-intro reveal">
+      <p>El 27 de marzo de 2026, casi un año exacto después del accidente mortal en Cerredo, la <strong>Inspección General de Servicios (IGS)</strong> del Principado de Asturias publicó su <strong>informe definitivo</strong> sobre el funcionamiento del Servicio de Minas. Tiene 317 páginas, parte de un requerimiento de actuación inspectora y revisa expedientes administrativos desde el 1 de enero de 2022. Es un documento <em>administrativo</em>: no determina causas técnicas del accidente —eso corresponde a la Inspección Minera y a la Justicia— sino que evalúa cómo había funcionado la Administración asturiana antes y durante los hechos.</p>
+    </div>
+
+    <div class="about-grid">
+      <div class="about-cell reveal">
+        <h4>Quién investiga</h4>
+        <p>La <strong>Inspección General de Servicios</strong>, órgano dependiente de la Consejería de Presidencia. Audita el funcionamiento interno de otros servicios de la Administración del Principado. No es un juzgado ni una inspección técnica.</p>
+      </div>
+      <div class="about-cell reveal">
+        <h4>Qué investiga</h4>
+        <p>El funcionamiento del <strong>Servicio de Minas</strong> del Principado en relación con el Pozo Cerredo: transmisiones de titularidad, garantías, restauración, denuncias, sancionadores y autorizaciones de proyectos.</p>
+      </div>
+      <div class="about-cell reveal">
+        <h4>Qué deja fuera</h4>
+        <p>Las <strong>causas técnicas</strong> del accidente, la responsabilidad penal y la valoración de cuestiones reservadas a la Inspección Minera, a la Inspección de Trabajo y al Instituto para la Transición Justa.</p>
+      </div>
+    </div>
+
+    <div class="glossary">
+      <h3 class="reveal">Glosario rápido</h3>
+      <p class="lead-sm reveal">Las siglas que aparecen una y otra vez en el informe.</p>
+      <div class="gloss-grid reveal">
+        <div class="gloss-item">
+          <div class="gloss-term">IGS · Inspección General de Servicios</div>
+          <p class="gloss-def">Órgano de control interno de la Administración asturiana, dependiente de la Consejería de Presidencia. Investiga cómo funcionan los servicios públicos del Principado, no a las empresas.</p>
+        </div>
+        <div class="gloss-item">
+          <div class="gloss-term">DF · Director Facultativo</div>
+          <p class="gloss-def">Cargo técnico responsable del Servicio de Minas. El informe no le imputa nada de forma personal: la responsabilidad se atribuye al "Servicio competente en materia de minería".</p>
+        </div>
+        <div class="gloss-item">
+          <div class="gloss-term">PIC · Proyecto de Investigación Complementaria</div>
+          <p class="gloss-def">Autorización para hacer trabajos subterráneos de investigación geológica complementarios a una concesión minera. No habilita a explotar carbón, pero permite operar en la mina y mover frentes y equipos.</p>
+        </div>
+        <div class="gloss-item">
+          <div class="gloss-term">ITJ · Instituto para la Transición Justa</div>
+          <p class="gloss-def">Organismo estatal del MITECO encargado de las ayudas al cierre del carbón y de aplicar la normativa europea (Decisión 2010/787/UE). La IGS le remite las dudas competenciales sobre el PIC.</p>
+        </div>
+        <div class="gloss-item">
+          <div class="gloss-term">ITSS · Inspección de Trabajo y Seguridad Social</div>
+          <p class="gloss-def">Inspección estatal en materia laboral. Coopera con la Administración minera autonómica en la prevención de riesgos laborales en la actividad extractiva.</p>
+        </div>
+        <div class="gloss-item">
+          <div class="gloss-term">RGNBSM · Reglamento General de Normas Básicas de Seguridad Minera</div>
+          <p class="gloss-def">El reglamento estatal (RD 863/1985) que fija las condiciones técnicas mínimas para trabajar en una mina, desde proyectos a planes de labores.</p>
+        </div>
+        <div class="gloss-item">
+          <div class="gloss-term">SAJA · Servicio de Asesoramiento Jurídico Administrativo</div>
+          <p class="gloss-def">Unidad de la Secretaría General Técnica encargada del asesoramiento jurídico interno. En el caso Cerredo, devuelve la propuesta sancionadora alegando "falta de funcionarios idóneos" para tramitar un procedimiento con víctima mortal.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== ANTES DEL AVISO: LA ESTRUCTURA ============== -->
+<section class="structure" id="estructura">
+  <div class="wrap-wide">
+    <div class="structure-grid">
+      <div class="structure-text reveal">
+        <p class="eyebrow">El punto de partida</p>
+        <h2 style="font-size:clamp(28px,3.4vw,42px)">El servicio que tenía que vigilar Cerredo se había quedado sin servicio</h2>
+        <p class="lead">Antes de las denuncias y de los expedientes, la mina la vigilaba un órgano cada vez más pequeño. En agosto de 2019, apenas mes y medio después de la investidura de <strong>Adrián Barbón (PSOE)</strong> como presidente del Principado, el Decreto 81/2019 de reestructuración de consejerías <strong>suprimió el Servicio de Seguridad Minera</strong> como unidad orgánica con rango de servicio. Desde el 1 de septiembre de ese año, la propia jefatura del único servicio competente en minería pone por escrito <strong>"reiteradas reducciones de personal"</strong> que afectan a las secciones de seguridad y ordenación. La Inspección General concluye que la decisión <em>"parecía responder a razones de estrategia económica ajenas a la reorganización"</em>. <a class="pdf-ref" href="informe_minas.pdf#page=47" target="_blank" rel="noopener">pág. 47 ↗</a></p>
+        <p style="color:var(--ink-dim)">No es una nota a pie de página: es la base sobre la que se entiende todo lo demás. Cuando los avisos llegaron, llegaron a un servicio que llevaba años perdiendo capacidad técnica para procesarlos.</p>
+      </div>
+      <div class="structure-stats reveal">
+        <div class="stat-block">
+          <div class="stat-num" data-count="2019">0</div>
+          <div class="stat-cap">Decreto 81/2019</div>
+          <p class="stat-text">Supresión del Servicio de Seguridad Minera como unidad orgánica con rango de servicio.</p>
+        </div>
+        <div class="stat-block stat-block--alt">
+          <div class="stat-tag">desde 01/09/2019</div>
+          <p class="stat-text"><strong>Reducciones reiteradas de personal</strong> en las secciones de seguridad minera y ordenación minera, según consta por escrito la propia jefatura del Servicio.</p>
+          <a class="stat-src" href="informe_minas.pdf#page=31" target="_blank" rel="noopener">Informe IGS · pág. 31</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== LA ADMINISTRACIÓN LO SABÍA ============== -->
+<section class="alert" id="alerta">
+  <div class="wrap">
+    <p class="eyebrow reveal">La alerta que llegó —y la respuesta que no</p>
+    <h2 class="reveal" style="max-width:780px">La administración lo sabía: tres correos avisaron de extracción de carbón sin autorización antes del accidente</h2>
+    <p class="lead reveal">Los avisos no llegaron solo desde dentro de los expedientes administrativos. Llegaron desde fuera, por correo electrónico al <strong>Servicio de Atención al Ciudadano (SAC)</strong> del Principado, identificando con precisión qué piso de la mina y qué actividad se denunciaba. El primero, ocho días después del accidente mortal de 2022. El último, el día siguiente al accidente de 2025.</p>
+
+    <div class="alert-grid">
+      <div class="alert-card reveal">
+        <div class="alert-date">02 / 09 / 2022</div>
+        <p class="alert-title">Primera denuncia al SAC</p>
+        <p class="alert-text">Ocho días después del accidente del 25/08/2022. Pregunta si la empresa contaba con permisos para una posible <strong>actividad extractiva en el sexto piso</strong> de Cerredo. El Jefe de Sección de Seguridad Minera responde el 26/09/2022 que se ha iniciado expediente de investigación.</p>
+        <a class="alert-src" href="informe_minas.pdf#page=98" target="_blank" rel="noopener">Sec. Denuncias · pág. 98</a>
+      </div>
+      <div class="alert-card reveal alert-card--key">
+        <div class="alert-date">16 / 10 / 2023</div>
+        <p class="alert-title">La denuncia que nadie cerró</p>
+        <p class="alert-text">Un correo informa al SAC sobre la <strong>explotación y extracción de carbón en la zona del Mangueiro o Piso 3º</strong> de la mina —el mismo lugar donde había ocurrido el accidente mortal del 25/08/2022 y donde sigue preservado el camión dúmper—. La denuncia no obtiene seguimiento operativo.</p>
+        <a class="alert-src" href="informe_minas.pdf#page=100" target="_blank" rel="noopener">Sec. Denuncias · pág. 100</a>
+      </div>
+      <div class="alert-card reveal">
+        <div class="alert-date">01 / 04 / 2025</div>
+        <p class="alert-title">El recordatorio del día después</p>
+        <p class="alert-text">Un día después del accidente mortal del 31/03/2025, el mismo remitente vuelve a escribir al SAC: <em>"el día 16 de octubre de 2023 se envió la información al SAC del Principado de Asturias acerca de la explotación y extracción de carbón…"</em>. La denuncia llevaba <strong>17 meses</strong> sobre la mesa.</p>
+        <a class="alert-src" href="informe_minas.pdf#page=100" target="_blank" rel="noopener">Sec. Denuncias · pág. 100</a>
+      </div>
+    </div>
+
+    <p class="reveal" style="margin-top:36px;color:var(--ink-dim)">El informe constata además que la práctica habitual del Servicio era <strong>remitir el contenido íntegro de la denuncia —incluidos los datos personales del denunciante— a la empresa denunciada</strong>, antes incluso de cualquier visita inspectora, "vulnerando con ello la garantía de confidencialidad". A la vez, las inspecciones derivadas de denuncias se hacían <strong>"con previo aviso a las minas que habían sido objeto de denuncia"</strong>, "contra el criterio general de actuación mantenido hasta ese momento". Y la cuenta corporativa del Servicio donde el SAC volcaba los correos no se leía: cuando el último denunciante volvió a escribir el 01/04/2025 fue cuando los responsables descubrieron que llevaban 17 meses con dos avisos de 2023 sin abrir.</p>
+  </div>
+</section>
+
+<!-- ============== CRONOLOGÍA ============== -->
+<section id="cronologia">
+  <div class="wrap">
+    <p class="eyebrow reveal">Cómo se llegó ahí</p>
+    <h2 class="reveal">Una cadena de avisos a la que nadie le prestó demasiada atención</h2>
+    <p class="lead reveal">Cerredo no estalla en marzo de 2025: encadena dieciséis años de cambios de titular, requerimientos sin ejecutar y procedimientos que se atascan. La extracción de carbón sin autorización en el sexto piso —y los avisos sobre el Mangueiro— aparecen una y otra vez en los informes mucho antes del último accidente.</p>
+
+    <div class="timeline">
+      <div class="t-item reveal">
+        <div class="t-date">01 / 09 / 2009</div>
+        <div class="t-title">Nace el Coto Minero Cerredo</div>
+        <p class="t-text">La Consejería autoriza la constitución del Coto a petición de UMINSA y Coto Minero Cantábrico (CMC). Es el origen de la unidad de explotación que, tres lustros después, sigue activa.</p>
+      </div>
+
+      <div class="t-item reveal">
+        <div class="t-date">10 / 12 / 2010</div>
+        <div class="t-title">Bruselas marca el calendario del cierre</div>
+        <p class="t-text">La Decisión 2010/787/UE establece que las minas con ayudas estatales deben acogerse a un plan de cierre que termine, como tarde, el 31 de diciembre de 2018. Cerredo recibirá ayudas bajo este régimen.</p>
+      </div>
+
+      <div class="t-item reveal">
+        <div class="t-date">16 / 12 / 2014</div>
+        <div class="t-title">Primera transmisión de concesiones</div>
+        <p class="t-text">Las concesiones "14209-Constantina y 17 más" pasan de Coto Minero Cantábrico a <strong>Compañía Minera Astur Leonesa (CMAL)</strong>. Empieza a moverse la titularidad mientras los pasivos ambientales siguen creciendo.</p>
+      </div>
+
+      <div class="t-item reveal t-warn">
+        <div class="t-date">20 / 01 / 2017</div>
+        <div class="t-title">CMAL, en concurso voluntario</div>
+        <p class="t-text">El Juzgado de lo Mercantil nº 2 de Oviedo declara el concurso de CMAL. La explotación queda en manos de una empresa con solvencia comprometida y obligaciones de restauración pendientes.</p>
+      </div>
+
+      <div class="t-item reveal t-warn">
+        <div class="t-date">2019</div>
+        <div class="t-title">Se suprime el Servicio de Seguridad Minera <span class="t-tag">Estructural</span></div>
+        <p class="t-text">El Decreto 81/2019 reorganiza el Principado y elimina el Servicio de Seguridad Minera como unidad orgánica. Desde el 01/09/2019, el único servicio competente en minería sufre <strong>"reiteradas reducciones de personal"</strong> que afectan a las secciones de seguridad y ordenación. <a class="pdf-ref" href="informe_minas.pdf#page=31" target="_blank" rel="noopener">pág. 31 ↗</a></p>
+      </div>
+
+      <div class="t-item reveal">
+        <div class="t-date">2021</div>
+        <div class="t-title">Incautación de avales</div>
+        <p class="t-text">La Consejería ordena incautar las garantías depositadas por los titulares para asegurar la ejecución de los planes de restauración. Es la señal de que el operador ya no puede cumplir por sí mismo.</p>
+      </div>
+
+      <div class="t-item reveal">
+        <div class="t-date">21 / 04 / 2022</div>
+        <div class="t-title">Cambio de titular: entra COMBAYL</div>
+        <p class="t-text">La Administración autoriza la transmisión de las concesiones a <strong>Combustibles Asturiana y Leonesa S.L.U. (COMBAYL)</strong>, integrando un "Plan de cierre y abandono" que <em>no contemplaba</em> labores de explotación: solo trabajos compatibles con la rehabilitación. <a class="pdf-ref" href="informe_minas.pdf#page=176" target="_blank" rel="noopener">pág. 176 ↗</a></p>
+      </div>
+
+      <div class="t-item reveal t-crit">
+        <div class="t-date">25 / 08 / 2022</div>
+        <div class="t-title">Primer accidente mortal en el Piso 3º (Mangueiro) <span class="t-tag">Mortal</span></div>
+        <p class="t-text">Un trabajador fallece y otro queda con amputación de la pierna izquierda en un accidente con un camión dúmper en el Piso 3º (Mangueiro). El Informe 1/22 del Servicio (21/12/2022) constata además que el carbón que transportaba el dúmper <strong>procedía de la plaza del 6º piso, para la que no existía autorización de explotación</strong>. <a class="pdf-ref" href="informe_minas.pdf#page=201" target="_blank" rel="noopener">pág. 201 ↗</a></p>
+      </div>
+
+      <div class="t-item reveal">
+        <div class="t-date">02 / 09 / 2022</div>
+        <div class="t-title">Primera denuncia ciudadana al SAC <span class="t-tag">Denuncia</span></div>
+        <p class="t-text">Ocho días después del accidente, un correo electrónico al Servicio de Atención al Ciudadano pregunta si la empresa contaba con permisos para una <strong>actividad extractiva en el sexto piso</strong>. La Administración responde que se ha abierto expediente. La denuncia desaparece de la cadena operativa.</p>
+      </div>
+
+      <div class="t-item reveal t-crit">
+        <div class="t-date">10 / 01 / 2023</div>
+        <div class="t-title">Indicios racionales de actividad clandestina</div>
+        <p class="t-text">La Inspección Minera abre expediente informativo por <strong>indicios racionales de actividad extractiva no autorizada</strong>. La propuesta sancionadora a COMBAYL (20.000 €) reconoce agravante de intencionalidad. <a class="pdf-ref" href="informe_minas.pdf#page=209" target="_blank" rel="noopener">pág. 209 ↗</a></p>
+      </div>
+
+      <div class="t-item reveal t-warn">
+        <div class="t-date">16 / 02 / 2023</div>
+        <div class="t-title">"No hay funcionarios idóneos" para sancionar</div>
+        <p class="t-text">Nota interior del Secretario General Técnico: el <strong>Servicio de Asesoramiento Jurídico Administrativo (SAJA)</strong> <em>"no dispone de funcionarios que dispongan de la idoneidad para solventar las muchas incidencias que puedan surgir en este accidente con una víctima mortal y un accidentado grave con amputación de su pierna izquierda"</em>. Devuelve la propuesta sancionadora. <a class="pdf-ref" href="informe_minas.pdf#page=194" target="_blank" rel="noopener">pág. 194 ↗</a></p>
+      </div>
+
+      <div class="t-item reveal t-crit">
+        <div class="t-date">16 / 10 / 2023</div>
+        <div class="t-title">Denuncia ignorada: extracción en el Mangueiro <span class="t-tag">Denuncia</span></div>
+        <p class="t-text">Un nuevo correo al SAC informa de <strong>explotación y extracción de carbón en la zona del Mangueiro o Piso 3º</strong> de Cerredo —la misma zona donde ocurrió el accidente mortal de 2022 y donde permanece preservado el dúmper—. El SAC lo reenvía a la cuenta corporativa compartida del Servicio de Minas. <strong>Nadie accede a esa cuenta</strong>: el correo no se lee. El silencio durará 17 meses, hasta abril de 2025. <a class="pdf-ref" href="informe_minas.pdf#page=116" target="_blank" rel="noopener">pág. 116 ↗</a></p>
+      </div>
+
+      <div class="t-item reveal">
+        <div class="t-date">2024</div>
+        <div class="t-title">Se autoriza el PIC con extracción de 60.000 t en Cerredo</div>
+        <p class="t-text">Con los expedientes por extracción no autorizada aún abiertos, la Administración autoriza el <strong>Proyecto de Investigación Complementario "Grupo Cerredo"</strong>: labores subterráneas en el transversal del Piso 1º, dirección Oeste, con una <strong>"prueba industrial" de 60.000 toneladas</strong> de material extraído. La titularidad acaba en Blue Solving S.L., sociedad de reciente creación. El propio informe IGS cuestiona si esa extracción vulnera la prohibición del art. 12.2 del RD 341/2021 sobre terrenos rehabilitados. <a class="pdf-ref" href="informe_minas.pdf#page=263" target="_blank" rel="noopener">pág. 263 ↗</a></p>
+      </div>
+
+      <div class="t-item reveal t-crit">
+        <div class="t-date">31 / 03 / 2025</div>
+        <div class="t-title">Cinco mineros mueren en el Piso 3º (Mangueiro) <span class="t-tag">Mortal</span></div>
+        <p class="t-text">El accidente que dispara la inspección extraordinaria. <strong>Mismo punto exacto</strong> que el accidente mortal del 25/08/2022, misma explotación, los mismos avisos previos sin cerrar. La Inspección General de Servicios recibe el requerimiento de actuación inspectora. <a class="pdf-ref" href="informe_minas.pdf#page=264" target="_blank" rel="noopener">pág. 264 ↗</a></p>
+      </div>
+
+      <div class="t-item reveal t-crit">
+        <div class="t-date">01 / 04 / 2025</div>
+        <div class="t-title">El recordatorio del día después <span class="t-tag">Denuncia</span></div>
+        <p class="t-text">Veinticuatro horas después del accidente mortal, llega al SAC un nuevo correo desde la misma cuenta que las denuncias anteriores: <em>"el día 16 de octubre de 2023 se envió la información al SAC del Principado de Asturias acerca de la explotación y extracción de carbón…"</em>. Es la denuncia que la Administración no cerró. <a class="pdf-ref" href="informe_minas.pdf#page=100" target="_blank" rel="noopener">pág. 100 ↗</a></p>
+      </div>
+
+      <div class="t-item reveal">
+        <div class="t-date">27 / 03 / 2026</div>
+        <div class="t-title">Informe definitivo de la IGS</div>
+        <p class="t-text">317 páginas. Concentra los hallazgos sobre transmisiones, garantías, restauración y procedimientos sancionadores. No nombra al Director Facultativo: la responsabilidad se atribuye al "Servicio competente".</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== HALLAZGOS — CONFRONTACIÓN ============== -->
+<section id="hallazgos" style="background:var(--bg-soft);border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
+  <div class="wrap-wide">
+    <div class="findings-head">
+      <div>
+        <p class="eyebrow reveal">Hallazgos clave</p>
+        <h2 class="reveal">Dos lados del expediente: lo que el informe imputa a la Administración y lo que aparece sobre la empresa</h2>
+      </div>
+    </div>
+    <p class="lead reveal" style="max-width:780px;color:var(--ink-dim);margin-bottom:36px">El documento es, ante todo, una auditoría del <strong>Servicio de Minas</strong>: ahí concentra sus reproches. Pero deja constancia de hechos —algunos ya sancionados, otros con expediente abierto— que afectan a las empresas que han operado el Pozo Cerredo. La Justicia y la Inspección Minera son quienes deberán pronunciarse sobre estas últimas.</p>
+
+    <div class="col-wrap reveal">
+      <!-- ADMINISTRACIÓN -->
+      <div class="col adm">
+        <div class="col-head">
+          <span class="col-pill">Administración</span>
+          <h3>Servicio de Minas del Principado</h3>
+        </div>
+        <p class="col-sub">Hallazgos que el informe atribuye expresamente al funcionamiento administrativo.</p>
+        <ol class="col-list">
+          <li><strong>Estructura debilitada.</strong> El Decreto 81/2019 suprime el Servicio de Seguridad Minera y desencadena reducciones de personal en las secciones de seguridad y ordenación.<a class="src" href="informe_minas.pdf#page=47" target="_blank" rel="noopener">Cap. estructura · pág. 47</a></li>
+          <li><strong>Transmisiones sin solvencia verificada.</strong> No se realizó actividad alguna para acreditar capacidad y solvencia de las adquirentes —pese al concurso previo y a sancionadores en marcha contra la transmitente—.<a class="src" href="informe_minas.pdf#page=308" target="_blank" rel="noopener">Cap. transmisiones · pág. 308</a></li>
+          <li><strong>Garantías insuficientes y modelo del abandono.</strong> Avales incautados en 2021, restauración ejecutada subsidiariamente por la Administración vía TRAGSA y un convenio entre el Instituto para la Transición Justa y la Consejería de Industria con comisión de seguimiento propia. El coste del cierre lo soporta el dinero público.<a class="src" href="informe_minas.pdf#page=151" target="_blank" rel="noopener">Garantías y restauración · pág. 151</a></li>
+          <li><strong>Denuncias específicas sin retorno operativo.</strong> Tres correos al SAC (02/09/2022, 16/10/2023, 01/04/2025) identificaban la actividad y el piso. Los dos del 2023 se reenviaron a una cuenta corporativa del Servicio de Minas que <strong>nadie leyó hasta abril de 2025</strong>, ya con el accidente ocurrido.<a class="src" href="informe_minas.pdf#page=116" target="_blank" rel="noopener">Sec. Denuncias · pág. 116</a></li>
+          <li><strong>Confidencialidad rota y aviso previo a las empresas.</strong> El Servicio remitía el contenido íntegro de las denuncias —con los datos del denunciante— a la empresa denunciada antes de cualquier inspección. Y las visitas derivadas de denuncias se anunciaban a la mina con antelación, "contra el criterio general de actuación". La IGS lo nombra como una disfunción que "puede impedir lograr el propio objetivo de la inspección".<a class="src" href="informe_minas.pdf#page=114" target="_blank" rel="noopener">Sec. Denuncias · págs. 114-115</a></li>
+          <li><strong>PIC autorizado con expedientes abiertos por extracción ilegal.</strong> Se concede el Proyecto de Investigación Complementario "Grupo Cerredo" (transversal Piso 1º · 60.000 t de "prueba industrial") con los expedientes por extracción no autorizada en el Piso 6º aún en tramitación.<a class="src" href="informe_minas.pdf#page=263" target="_blank" rel="noopener">Cap. PIC 2024 · pág. 263</a></li>
+          <li><strong>Trampa de la idoneidad.</strong> El SAJA devuelve la propuesta sancionadora porque "no dispone de funcionarios que dispongan de la idoneidad" para tramitar un procedimiento con víctima mortal. La Administración admite por escrito que carece de capacidad técnica para juzgarse a sí misma.<a class="src" href="informe_minas.pdf#page=194" target="_blank" rel="noopener">Nota interior · pág. 194</a></li>
+          <li><strong>Competencias en zona gris.</strong> La IGS no resuelve si el PIC contraviene el art. 12.2 del RD 341/2021 y la Decisión 2010/787/UE: lo remite al Instituto para la Transición Justa.<a class="src" href="informe_minas.pdf#page=306" target="_blank" rel="noopener">Conclusiones · págs. 306-307</a></li>
+        </ol>
+      </div>
+
+      <!-- EMPRESA -->
+      <div class="col emp">
+        <div class="col-head">
+          <span class="col-pill">Empresa</span>
+          <h3>CMAL → COMBAYL → Blue Solving</h3>
+        </div>
+        <p class="col-sub">Hechos sobre las titulares que constan en el informe; la Inspección Minera y la Justicia siguen instruyendo.</p>
+        <ol class="col-list">
+          <li><strong>Extracción de carbón sin autorización.</strong> El Informe 1/22 del Servicio (21/12/2022) determina que el carbón del camión accidentado en agosto de 2022 procedía del Piso 6º, "para el que no existe autorización de explotación".<a class="src" href="informe_minas.pdf#page=201" target="_blank" rel="noopener">Informe 1/22 · pág. 201</a></li>
+          <li><strong>Plan de cierre y abandono incumplido.</strong> La autorización de transmisión a COMBAYL en 2022 no contemplaba labores de explotación, solo trabajos compatibles con la rehabilitación. La operativa real fue otra.<a class="src" href="informe_minas.pdf#page=176" target="_blank" rel="noopener">Resolución 21/04/2022 · pág. 176</a></li>
+          <li><strong>Multa propuesta de 20.000 € con agravante de intencionalidad.</strong> La propuesta sancionadora reconoce que la empresa "era perfectamente consciente" de las condiciones de la transmisión y del cierre.<a class="src" href="informe_minas.pdf#page=209" target="_blank" rel="noopener">Acuerdo sancionador · pág. 209</a></li>
+          <li><strong>Transmisión intragrupo en pleno expediente.</strong> COMBAYL traspasa los derechos a Blue Solving S.L., sociedad de reciente creación vinculada al mismo grupo empresarial, mientras tenía dos sancionadores propuestos —uno por actividad clandestina—.<a class="src" href="informe_minas.pdf#page=231" target="_blank" rel="noopener">Cap. Blue Solving · pág. 231</a></li>
+          <li><strong>Documentación post-reinicio incompleta.</strong> Memorias de actividad, puesta a disposición de equipos y documentación posterior aportada por Blue Solving presentan lagunas señaladas por el informe.<a class="src" href="informe_minas.pdf#page=254" target="_blank" rel="noopener">Doc. Blue Solving · pág. 254</a></li>
+          <li><strong>Expedientes abiertos sobre el Piso 6º que no se cierran.</strong> Los expedientes INSP/2022/7172 e INSP/2023/362, derivados del accidente de 2022, se refieren a labores no autorizadas en el Piso 6º. Siguen en tramitación en marzo de 2025, cuando un nuevo accidente mortal ocurre en el Piso 3º (Mangueiro) de la misma explotación.<a class="src" href="informe_minas.pdf#page=216" target="_blank" rel="noopener">Expedientes inspectores · pág. 216</a></li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== EL MODELO DEL ABANDONO ============== -->
+<section id="modelo">
+  <div class="wrap">
+    <p class="eyebrow reveal">El modelo del abandono</p>
+    <h2 class="reveal" style="max-width:760px">Empresas que se van, Administración que paga</h2>
+    <p class="lead reveal">Detrás de cada transmisión hay una norma básica que el informe trae en cursiva: <em>"no podrán otorgarse autorizaciones, permisos o concesiones reguladas por la Ley de Minas sin tener autorizado un plan de restauración y, una vez otorgados, no podrán iniciarse los trabajos hasta tener constituidas las correspondientes garantías financieras o equivalentes que aseguren su cumplimiento"</em>. La realidad de Cerredo es la inversa.</p>
+
+    <div class="model-grid">
+      <div class="model-cell reveal">
+        <div class="model-num">01</div>
+        <h3>La regla rota</h3>
+        <p>Sin garantías financieras suficientes, la Ley de Minas y el Real Decreto 975/2009 no permiten ni iniciar trabajos ni otorgar nuevas autorizaciones. El informe recuerda esa regla básica.</p>
+        <div class="model-src">h_011 · pág. 70</div>
+      </div>
+      <div class="model-cell reveal">
+        <div class="model-num">02</div>
+        <h3>La opción que no se tomó</h3>
+        <p>"Teniendo en cuenta que los incumplimientos estaban sobradamente acreditados se debería haber activado sin más [el] procedimiento sancionador, la incautación de garantías, la ejecución subsidiaria de la restauración y, en último término, la caducidad de las concesiones".</p>
+        <div class="model-src">h_055 · pág. 151</div>
+      </div>
+      <div class="model-cell reveal">
+        <div class="model-num">03</div>
+        <h3>El bucle que queda</h3>
+        <p>Avales incautados, restauración ejecutada por TRAGSA con presidencia del Instituto para la Transición Justa en la Comisión de Seguimiento. La Administración paga, supervisa y arranca un convenio para reparar lo que la titular no hizo.</p>
+        <div class="model-src">h_088 · pág. 163</div>
+      </div>
+    </div>
+
+    <p class="reveal" style="margin-top:30px">Mientras el dinero público entra para restaurar, la titularidad del derecho minero sigue moviéndose: COMBAYL recibe el Pozo en 2022, lo traspasa a Blue Solving y firma con ésta —según deja constancia el propio informe— un <strong>contrato de prestación de servicios para que la antigua titular siga ejecutando "todo tipo de trabajos de explotación/extracción de carbón en Cerredo"</strong>. La autoridad minera no cierra ese trámite. <a class="pdf-ref" href="informe_minas.pdf#page=317" target="_blank" rel="noopener">recom. UNDÉCIMA · pág. 317 ↗</a></p>
+  </div>
+</section>
+
+<!-- ============== PULL QUOTE ============== -->
+<section>
+  <div class="wrap">
+    <blockquote class="pull reveal">
+      "Se advierte que el carbón que transporta el camión accidentado procede de la plaza del 6º piso de la mina de interior, para la que no existe autorización de explotación."
+      <cite>— Informe 1/22 del Servicio de Promoción, Desarrollo y Seguridad Mineros · 21/12/2022 · <a class="pdf-ref" href="informe_minas.pdf#page=201" target="_blank" rel="noopener">pág. 201 del informe IGS</a></cite>
+    </blockquote>
+    <p class="reveal">Esa frase, escrita dos años y tres meses antes del accidente del 31 de marzo de 2025, es el aviso más nítido del expediente. La Administración sabía que en el 6º piso se estaba extrayendo carbón sin autorización. El piso siguió activo.</p>
+  </div>
+</section>
+
+<!-- ============== EL BUCLE DE IMPUNIDAD ============== -->
+<section id="bucle" class="bucle">
+  <div class="wrap-wide">
+    <p class="eyebrow reveal">El bucle de impunidad</p>
+    <h2 class="reveal" style="max-width:780px">Tres actos sobre Cerredo</h2>
+    <p class="lead reveal" style="max-width:780px">Toda la historia de Cerredo cabe en tres movimientos. En cada uno, la Administración tenía margen para parar. En cada uno, eligió continuar. El resultado: una explotación operando técnicamente en zona gris —con extracción no autorizada certificada en el Piso 6º y luego un PIC con 60.000 t de "prueba industrial" en el Piso 1º— desde agosto de 2022 hasta el accidente del 31 de marzo de 2025 en el Piso 3º (Mangueiro).</p>
+
+    <div class="acts">
+      <div class="act reveal">
+        <div class="act-roman">I</div>
+        <div class="act-period">Agosto 2022</div>
+        <h3 class="act-title">El origen de la ilegalidad</h3>
+        <dl class="act-dl">
+          <dt>El hecho</dt>
+          <dd>Un trabajador muere y otro queda con amputación de la pierna izquierda en un accidente con un camión dúmper en el <strong>Piso 3º (Mangueiro)</strong>.</dd>
+          <dt>La irregularidad</dt>
+          <dd>El Informe 1/22 del Servicio (21/12/2022) determina que el carbón que transportaba el camión accidentado <em>"procede de la plaza del 6º piso… para la que no existe autorización de explotación"</em>.</dd>
+          <dt>El estado</dt>
+          <dd>La empresa ya estaba operando <strong>fuera de su permiso legal</strong>: extracción no autorizada en el Piso 6º.</dd>
+        </dl>
+      </div>
+
+      <div class="act-arrow reveal" aria-hidden="true">→</div>
+
+      <div class="act reveal">
+        <div class="act-roman">II</div>
+        <div class="act-period">2023 — 2024</div>
+        <h3 class="act-title">La "legalización" fallida</h3>
+        <dl class="act-dl">
+          <dt>El hecho</dt>
+          <dd>Con los expedientes INSP/2022/7172 e INSP/2023/362 abiertos por la extracción ilegal en el Piso 6º, la Administración autoriza en julio de 2024 un <strong>Proyecto de Investigación Complementario (PIC)</strong> en el mismo Grupo Cerredo: labores subterráneas en el transversal del Piso 1º, dirección Oeste, con una <strong>"prueba industrial" de 60.000 toneladas</strong> de material extraído.</dd>
+          <dt>La irregularidad</dt>
+          <dd>Un PIC sirve para <em>investigar</em>, no para explotar. El propio informe IGS cuestiona si esas 60.000 t implican vulnerar la <strong>prohibición taxativa del art. 12.2 del RD 341/2021</strong> de extraer carbón en terrenos rehabilitados, y constata que no consta consulta previa al Instituto para la Transición Justa.</dd>
+          <dt>El estado</dt>
+          <dd>Permiso de "investigación" con extracción asociada, sí. <strong>Autorización de explotación regular, no.</strong></dd>
+        </dl>
+      </div>
+
+      <div class="act-arrow reveal" aria-hidden="true">→</div>
+
+      <div class="act act--tragic reveal">
+        <div class="act-roman">III</div>
+        <div class="act-period">31 / 03 / 2025</div>
+        <h3 class="act-title">El desenlace</h3>
+        <dl class="act-dl">
+          <dt>El hecho</dt>
+          <dd>Cinco mineros mueren en el <strong>Piso 3º (Mangueiro)</strong>: el mismo punto exacto del accidente del 25/08/2022.</dd>
+          <dt>La irregularidad</dt>
+          <dd>Dos años y medio después del primer accidente, sigue sin existir autorización ordinaria de explotación de carbón en Cerredo. Lo único vigente es el permiso de "investigación" del Acto II y los expedientes por extracción ilegal en el 6º, aún sin cerrar.</dd>
+          <dt>El estado</dt>
+          <dd>La actividad sigue siendo <strong>técnicamente irregular el día del accidente</strong>.</dd>
+        </dl>
+      </div>
+    </div>
+
+    <p class="bucle-resumen reveal">En 2025 no se trabajaba con permisos ordinarios de explotación. Se trabajaba en un <strong>vacío legal creado por la propia Administración</strong>: con los expedientes por extracción ilegal en el Piso 6º aún abiertos, se había autorizado un PIC con 60.000 t de "prueba industrial" sobre el Piso 1º —y todo, dentro del mismo Grupo Cerredo donde un año antes había muerto un trabajador.</p>
+  </div>
+</section>
+
+<!-- ============== EL NUDO ============== -->
+<section id="nudo" class="knot">
+  <div class="wrap">
+    <p class="eyebrow reveal">El nudo del caso</p>
+    <h2 class="reveal">Una <em>paradoja de control</em>: más transmisiones, menos vigilancia</h2>
+    <p class="lead reveal">Cerredo no es solo un pozo en cierre. Es lo que ocurre cuando la Administración firma traspasos de derechos a empresas con solvencia frágil mientras pierde, en paralelo, la capacidad técnica para vigilar lo que esas empresas hacen sobre el terreno.</p>
+
+    <div class="paradox">
+      <div class="pa-cell reveal">
+        <h4>Mientras tanto, en los expedientes…</h4>
+        <p>La Administración autoriza transmisiones a sociedades de reciente creación, con plan de cierre como argumento, sin instrucción suficiente sobre solvencia ni proyecto de explotación que avale la operación.</p>
+      </div>
+      <div class="pa-vs reveal">vs.</div>
+      <div class="pa-cell reveal">
+        <h4>Mientras tanto, en la estructura…</h4>
+        <p>Se suprime el Servicio de Seguridad Minera, se reduce personal en secciones críticas y se devuelven sancionadores por falta de funcionarios idóneos. La capacidad de control técnico se erosiona.</p>
+      </div>
+    </div>
+
+    <p class="reveal" style="margin-top:30px">Y cuando el control llega, llega <strong>con la denuncia ya en manos del denunciado</strong>: la práctica del Servicio era enviar el contenido íntegro de los avisos —datos personales del denunciante incluidos— a la empresa denunciada, y anunciar la inspección con antelación. Una doble fuga que, en el caso Cerredo, se combina con una bandeja de correo corporativa que durante 17 meses nadie abrió.</p>
+
+    <p class="reveal">El resultado es un <strong>vacío de garantías</strong>. Las empresas se van; los pasivos ambientales se quedan; los fondos para restaurar no están donde tendrían que estar. La Administración termina ejecutando subsidiariamente con TRAGSA y solicitando ayudas estatales (Decisión 2010/787/UE) para reparar lo que dejaron quienes ya no responden.</p>
+
+    <p class="reveal">Y entre transmisión y transmisión, en el mismo Cerredo cuyo Piso 6º un informe técnico señaló por extracción clandestina en 2022, el 31 de marzo de 2025 mueren cinco trabajadores en el Piso 3º (Mangueiro) —el mismo punto del accidente mortal de hace tres años.</p>
+  </div>
+</section>
+
+<!-- ============== LO QUE EL INFORME NO DICE ============== -->
+<section>
+  <div class="wrap">
+    <p class="eyebrow reveal">Lo que el informe no contesta</p>
+    <h2 class="reveal" style="max-width:760px">Las preguntas que la IGS deja —deliberadamente— abiertas</h2>
+
+    <div class="limits reveal" style="margin-top:30px">
+      <h3>Autolimitaciones explícitas y huecos del expediente</h3>
+      <ul>
+        <li>El informe <strong>no individualiza al Director Facultativo</strong>: la responsabilidad se atribuye al "Servicio competente en materia de minería". La IGS declara expresamente que no entra en cuestiones técnicas reservadas a la Inspección Minera.</li>
+        <li>Acota su análisis <strong>desde el 1 de enero de 2022</strong>, lo que deja en zona de penumbra las transmisiones, ayudas y plan de cierre anteriores (2014, concurso de 2017, calendario UE de 2018).</li>
+        <li>Remite al <strong>Instituto para la Transición Justa</strong> la valoración de si el PIC autorizado contraviene la prohibición de extraer carbón en zonas con ayudas (art. 12.2 RD 341/2021).</li>
+        <li>No detalla la cifra exacta de garantías incautadas ni el coste total ya soportado por la Administración a través de TRAGSA.</li>
+        <li>No identifica qué unidad o funcionario recibió la denuncia del 16/10/2023 al SAC sobre extracción en el Mangueiro y por qué no se derivó actuación inspectora.</li>
+        <li>No establece si los hechos del Piso 6º podrían constituir indicios de delito a comunicar al Ministerio Fiscal vía art. 262 LECrim.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============== FOOTER ============== -->
+<footer>
+  <div class="wrap-wide row">
+    <div>
+      <p><strong>Fuente principal</strong></p>
+      <p>Informe definitivo de la Inspección General de Servicios del Principado de Asturias sobre el funcionamiento del Servicio de Minas. Provisional: 05/03/2026 · Definitivo: 27/03/2026 · 317 páginas.</p>
+    </div>
+    <div>
+      <p><strong>Autoría</strong></p>
+      <p>Contenido realizado por <strong>David Fernández Sancho</strong> con asistencia de Gemma 4, Claude Code y una skill propia de análisis de informes.</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Reveal on scroll
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  },{threshold:0.15, rootMargin:"0px 0px -50px 0px"});
+  document.querySelectorAll('.reveal, .t-item').forEach(el=>io.observe(el));
+
+  // Animated counters (years)
+  const counters = document.querySelectorAll('[data-count]');
+  const cio = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(!e.isIntersecting) return;
+      const el = e.target;
+      const target = parseInt(el.dataset.count,10);
+      const start = target - 60;
+      const dur = 1400;
+      const t0 = performance.now();
+      const step = (t)=>{
+        const p = Math.min(1,(t-t0)/dur);
+        const eased = 1 - Math.pow(1-p, 3);
+        el.textContent = Math.round(start + (target-start)*eased);
+        if(p<1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+      cio.unobserve(el);
+    });
+  },{threshold:0.5});
+  counters.forEach(el=>cio.observe(el));
+
+  // Topbar progress + scrolled state
+  const bar = document.getElementById('topbar');
+  const prog = document.getElementById('progress');
+  const onScroll = ()=>{
+    const h = document.documentElement;
+    const max = h.scrollHeight - h.clientHeight;
+    const pct = max>0 ? (h.scrollTop/max)*100 : 0;
+    prog.style.width = pct+'%';
+    bar.classList.toggle('scrolled', h.scrollTop>20);
+  };
+  document.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+</script>
+
+<!-- ============== HERO MAP (MapLibre + CartoDB Dark Matter) ============== -->
+<script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+<script>
+  (function initHeroMap(){
+    if (!window.maplibregl) return;
+    var prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var container = document.getElementById('hero-map');
+    if (!container) return;
+
+    var CERREDO = [-6.7128, 42.9438]; // lon, lat — Pozo Cerredo, Degaña
+
+    var map = new maplibregl.Map({
+      container: 'hero-map',
+      style: {
+        version: 8,
+        sources: {
+          'carto-dark': {
+            type: 'raster',
+            tiles: [
+              'https://a.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}@2x.png',
+              'https://b.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}@2x.png',
+              'https://c.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}@2x.png',
+              'https://d.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}@2x.png'
+            ],
+            tileSize: 256,
+            attribution: '© OpenStreetMap · © CARTO'
+          }
+        },
+        layers: [{ id:'carto-dark', type:'raster', source:'carto-dark' }]
+      },
+      center: prefersReduced ? CERREDO : [-4.5, 41.0],
+      zoom: prefersReduced ? 11 : 5.2,
+      pitch: 0,
+      bearing: 0,
+      interactive: false,
+      attributionControl: { compact: true }
+    });
+
+    map.on('load', function(){
+      container.classList.add('ready');
+
+      // Pulsing marker at Cerredo
+      var el = document.createElement('div');
+      el.style.cssText = 'width:14px;height:14px;border-radius:50%;background:#e63946;'+
+        'box-shadow:0 0 0 0 rgba(230,57,70,.6);animation:heroPulse 2.4s infinite;'+
+        'border:2px solid #fff;';
+      new maplibregl.Marker({ element: el }).setLngLat(CERREDO).addTo(map);
+
+      if (prefersReduced) return;
+
+      // Slow flight from Iberia → Asturias → Cerredo
+      setTimeout(function(){
+        map.easeTo({
+          center: CERREDO,
+          zoom: 11.2,
+          duration: 16000,
+          pitch: 35,
+          bearing: -8,
+          easing: function(t){ return t<.5 ? 2*t*t : 1-Math.pow(-2*t+2,2)/2; }
+        });
+      }, 800);
+    });
+
+    // Inject the pulse keyframes once
+    var style = document.createElement('style');
+    style.textContent = '@keyframes heroPulse{0%{box-shadow:0 0 0 0 rgba(230,57,70,.55)}'+
+      '70%{box-shadow:0 0 0 18px rgba(230,57,70,0)}'+
+      '100%{box-shadow:0 0 0 0 rgba(230,57,70,0)}}';
+    document.head.appendChild(style);
+  })();
+
+  // ===== Mapa estático "Dónde está" =====
+  (function initStaticMap(){
+    if (!window.maplibregl) return;
+    var container = document.getElementById('static-map');
+    if (!container) return;
+
+    var CERREDO = [-6.7128, 42.9438];
+
+    var smap = new maplibregl.Map({
+      container: 'static-map',
+      style: {
+        version: 8,
+        sources: {
+          'carto-dark': {
+            type: 'raster',
+            tiles: [
+              'https://a.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}@2x.png',
+              'https://b.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}@2x.png',
+              'https://c.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}@2x.png',
+              'https://d.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}@2x.png'
+            ],
+            tileSize: 256,
+            attribution: '© OpenStreetMap · © CARTO'
+          }
+        },
+        layers: [{ id:'carto-dark', type:'raster', source:'carto-dark' }]
+      },
+      center: CERREDO,
+      zoom: 6.2,
+      interactive: true,
+      attributionControl: { compact: true },
+      cooperativeGestures: true
+    });
+
+    smap.addControl(new maplibregl.NavigationControl({ showCompass:false }), 'top-right');
+
+    smap.on('load', function(){
+      var el = document.createElement('div');
+      el.style.cssText = 'width:16px;height:16px;border-radius:50%;background:#e63946;'+
+        'box-shadow:0 0 0 0 rgba(230,57,70,.6);animation:heroPulse 2.4s infinite;'+
+        'border:2px solid #fff;';
+      new maplibregl.Marker({ element: el }).setLngLat(CERREDO).addTo(smap);
+    });
+  })();
+</script>
+</body>
+</html>
