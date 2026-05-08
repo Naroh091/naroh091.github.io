@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>La descoordinación que apagó España · Informe ENTSO-E</title>
+<style>
+  :root {
+    --bg-light: #f5f3ee;
+    --ink-light: #15171a;
+    --muted-light: #5a5e66;
+    --rule-light: #d8d4c8;
+    --accent-light: #b22222;
+
+    --bg-dark: #07090c;
+    --bg-dark-2: #0d1117;
+    --ink-dark: #ece8df;
+    --muted-dark: #8a8e96;
+    --rule-dark: #1e242c;
+    --accent-dark: #ffb627;
+    --accent-dark-2: #4dd0e1;
+    --warn-dark: #ff5252;
+
+    --serif: 'Georgia', 'Times New Roman', serif;
+    --sans: 'Helvetica Neue', 'Inter', system-ui, sans-serif;
+    --mono: 'IBM Plex Mono', 'Menlo', monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    background: var(--bg-light);
+    color: var(--ink-light);
+    font-family: var(--serif);
+    line-height: 1.6;
+    transition: background 1.2s ease, color 1.2s ease;
+    overflow-x: hidden;
+  }
+
+  body.flicker {
+    animation: flicker 2.6s steps(2, end) forwards;
+  }
+
+  @keyframes flicker {
+    0%   { background: #f5f3ee; color: #15171a; }
+    8%   { background: #1a1d22; color: #ece8df; }
+    12%  { background: #f5f3ee; color: #15171a; }
+    18%  { background: #1a1d22; color: #ece8df; }
+    21%  { background: #f5f3ee; color: #15171a; }
+    27%  { background: #08090c; color: #ece8df; }
+    33%  { background: #f5f3ee; color: #15171a; }
+    36%  { background: #08090c; color: #ece8df; }
+    44%  { background: #1a1d22; color: #ece8df; }
+    49%  { background: #f5f3ee; color: #15171a; }
+    52%  { background: #08090c; color: #ece8df; }
+    60%  { background: #261b08; color: #ffb627; }
+    66%  { background: #08090c; color: #ece8df; }
+    72%  { background: #f5f3ee; color: #15171a; }
+    78%  { background: #08090c; color: #ece8df; }
+    84%  { background: #08090c; color: #ece8df; }
+    90%  { background: #07090c; color: #ece8df; }
+    100% { background: #07090c; color: #ece8df; }
+  }
+
+  body.dark {
+    background: var(--bg-dark);
+    color: var(--ink-dark);
+  }
+
+  /* The bulb / vignette overlay */
+  .bulb-overlay {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 10;
+    background: radial-gradient(
+      ellipse at 50% 38%,
+      rgba(255,255,255,0) 0%,
+      rgba(0,0,0,0) 55%,
+      rgba(0,0,0,0) 100%
+    );
+    mix-blend-mode: multiply;
+    transition: background 1.5s ease;
+  }
+  body.dark .bulb-overlay {
+    background: radial-gradient(
+      ellipse at 50% 38%,
+      rgba(255, 182, 39, 0.06) 0%,
+      rgba(0, 0, 0, 0) 35%,
+      rgba(0, 0, 0, 0.85) 100%
+    );
+    mix-blend-mode: normal;
+  }
+
+  /* The "filament" indicator at top */
+  .filament {
+    position: fixed;
+    top: 18px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 12;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted-light);
+    transition: color 1.2s ease;
+  }
+  body.dark .filament { color: var(--muted-dark); }
+  .filament .dot {
+    display: inline-block;
+    width: 8px; height: 8px; border-radius: 50%;
+    background: #15171a;
+    margin-right: 8px;
+    vertical-align: middle;
+    box-shadow: 0 0 6px rgba(0,0,0,0.2);
+  }
+  body.dark .filament .dot {
+    background: var(--accent-dark);
+    box-shadow: 0 0 14px rgba(255, 182, 39, 0.7);
+    animation: pulse 2.6s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.35; }
+  }
+
+  /* Layout */
+  .wrap {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 0 28px;
+    position: relative;
+    z-index: 2;
+  }
+
+  header.hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 80px 0 60px;
+  }
+
+  .kicker {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--muted-light);
+    margin-bottom: 24px;
+    transition: color 1.2s ease;
+  }
+  body.dark .kicker { color: var(--accent-dark); }
+
+  h1.title {
+    font-family: var(--serif);
+    font-size: clamp(34px, 5.8vw, 64px);
+    line-height: 1.08;
+    letter-spacing: -0.01em;
+    font-weight: 400;
+    margin-bottom: 28px;
+  }
+  h1.title em {
+    font-style: italic;
+    color: var(--accent-light);
+    transition: color 1.2s ease;
+  }
+  body.dark h1.title em { color: var(--accent-dark); }
+
+  .dek {
+    font-family: var(--sans);
+    font-size: 19px;
+    line-height: 1.55;
+    color: var(--muted-light);
+    max-width: 620px;
+    margin-bottom: 48px;
+    transition: color 1.2s ease;
+  }
+  body.dark .dek { color: var(--muted-dark); }
+
+  .byline {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted-light);
+    border-top: 1px solid var(--rule-light);
+    padding-top: 18px;
+    transition: color 1.2s ease, border-color 1.2s ease;
+  }
+  body.dark .byline {
+    color: var(--muted-dark);
+    border-top-color: var(--rule-dark);
+  }
+
+  /* Section */
+  section {
+    padding: 80px 0;
+    border-top: 1px solid var(--rule-light);
+    transition: border-color 1.2s ease;
+  }
+  body.dark section { border-top-color: var(--rule-dark); }
+
+  .section-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted-light);
+    margin-bottom: 14px;
+    transition: color 1.2s ease;
+  }
+  body.dark .section-num { color: var(--accent-dark); }
+
+  h2 {
+    font-family: var(--serif);
+    font-size: clamp(26px, 3.6vw, 38px);
+    line-height: 1.18;
+    font-weight: 400;
+    margin-bottom: 32px;
+    letter-spacing: -0.005em;
+  }
+
+  p.lede {
+    font-family: var(--serif);
+    font-size: 22px;
+    line-height: 1.5;
+    margin-bottom: 24px;
+  }
+  p.lede::first-letter {
+    font-size: 3.2em;
+    float: left;
+    line-height: 0.9;
+    padding-right: 10px;
+    padding-top: 6px;
+    color: var(--accent-light);
+    transition: color 1.2s ease;
+  }
+  body.dark p.lede::first-letter { color: var(--accent-dark); }
+
+  p {
+    font-size: 18px;
+    line-height: 1.7;
+    margin-bottom: 22px;
+  }
+
+  p strong { font-weight: 700; }
+
+  blockquote.pull {
+    border-left: 3px solid var(--accent-light);
+    padding: 10px 0 10px 24px;
+    margin: 36px 0;
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 22px;
+    line-height: 1.45;
+    color: var(--ink-light);
+    transition: border-color 1.2s ease, color 1.2s ease;
+  }
+  body.dark blockquote.pull {
+    border-left-color: var(--accent-dark);
+    color: var(--ink-dark);
+  }
+  blockquote.pull cite {
+    display: block;
+    font-style: normal;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted-light);
+    margin-top: 14px;
+    transition: color 1.2s ease;
+  }
+  body.dark blockquote.pull cite { color: var(--muted-dark); }
+
+  /* Stats grid */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 24px;
+    margin: 44px 0;
+    padding: 28px 0;
+    border-top: 1px solid var(--rule-light);
+    border-bottom: 1px solid var(--rule-light);
+    transition: border-color 1.2s ease;
+  }
+  body.dark .stats {
+    border-top-color: var(--rule-dark);
+    border-bottom-color: var(--rule-dark);
+  }
+  .stat-num {
+    font-family: var(--serif);
+    font-size: 44px;
+    line-height: 1;
+    color: var(--accent-light);
+    margin-bottom: 8px;
+    transition: color 1.2s ease;
+  }
+  body.dark .stat-num { color: var(--accent-dark); }
+  .stat-label {
+    font-family: var(--sans);
+    font-size: 13px;
+    line-height: 1.4;
+    color: var(--muted-light);
+    transition: color 1.2s ease;
+  }
+  body.dark .stat-label { color: var(--muted-dark); }
+
+  /* Timeline */
+  .timeline {
+    position: relative;
+    margin: 40px 0;
+    padding-left: 0;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 100px;
+    top: 8px;
+    bottom: 8px;
+    width: 1px;
+    background: var(--rule-light);
+    transition: background 1.2s ease;
+  }
+  body.dark .timeline::before { background: var(--rule-dark); }
+
+  .tl-event {
+    display: grid;
+    grid-template-columns: 92px 1fr;
+    gap: 24px;
+    margin-bottom: 28px;
+    position: relative;
+  }
+  .tl-time {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.05em;
+    color: var(--accent-light);
+    padding-top: 4px;
+    transition: color 1.2s ease;
+  }
+  body.dark .tl-time { color: var(--accent-dark); }
+  .tl-event::before {
+    content: '';
+    position: absolute;
+    left: 96px;
+    top: 11px;
+    width: 9px;
+    height: 9px;
+    background: var(--bg-light);
+    border: 1.5px solid var(--accent-light);
+    border-radius: 50%;
+    transition: background 1.2s ease, border-color 1.2s ease;
+  }
+  body.dark .tl-event::before {
+    background: var(--bg-dark);
+    border-color: var(--accent-dark);
+    box-shadow: 0 0 8px rgba(255, 182, 39, 0.5);
+  }
+  .tl-event.critical::before {
+    background: var(--accent-light);
+  }
+  body.dark .tl-event.critical::before {
+    background: var(--warn-dark);
+    border-color: var(--warn-dark);
+    box-shadow: 0 0 12px rgba(255, 82, 82, 0.7);
+  }
+  .tl-body { padding-left: 24px; }
+  .tl-body strong {
+    display: block;
+    font-family: var(--sans);
+    font-size: 15px;
+    margin-bottom: 4px;
+  }
+  .tl-body span {
+    font-family: var(--sans);
+    font-size: 14px;
+    color: var(--muted-light);
+    line-height: 1.5;
+    transition: color 1.2s ease;
+  }
+  body.dark .tl-body span { color: var(--muted-dark); }
+
+  /* Findings cards */
+  .findings {
+    display: grid;
+    gap: 0;
+    margin: 36px 0;
+  }
+  .finding {
+    padding: 28px 0;
+    border-bottom: 1px solid var(--rule-light);
+    transition: border-color 1.2s ease;
+  }
+  body.dark .finding { border-bottom-color: var(--rule-dark); }
+  .finding:first-child {
+    border-top: 1px solid var(--rule-light);
+  }
+  body.dark .finding:first-child { border-top-color: var(--rule-dark); }
+  .finding-tag {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent-light);
+    margin-bottom: 10px;
+    transition: color 1.2s ease;
+  }
+  body.dark .finding-tag { color: var(--accent-dark-2); }
+  .finding h3 {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: 22px;
+    line-height: 1.3;
+    margin-bottom: 10px;
+  }
+  .finding p {
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--muted-light);
+    margin-bottom: 10px;
+    transition: color 1.2s ease;
+  }
+  body.dark .finding p { color: var(--muted-dark); }
+  .finding .src {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: var(--muted-light);
+    transition: color 1.2s ease;
+  }
+  body.dark .finding .src { color: var(--muted-dark); }
+
+  /* Recommendations */
+  .reco {
+    display: grid;
+    grid-template-columns: 36px 1fr;
+    gap: 18px;
+    padding: 18px 0;
+    border-bottom: 1px solid var(--rule-light);
+    transition: border-color 1.2s ease;
+  }
+  body.dark .reco { border-bottom-color: var(--rule-dark); }
+  .reco-num {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--accent-light);
+    padding-top: 2px;
+    transition: color 1.2s ease;
+  }
+  body.dark .reco-num { color: var(--accent-dark); }
+  .reco-text {
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.55;
+  }
+
+  /* Footer */
+  footer {
+    padding: 64px 0 80px;
+    border-top: 1px solid var(--rule-light);
+    transition: border-color 1.2s ease;
+  }
+  body.dark footer { border-top-color: var(--rule-dark); }
+  footer .meta {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted-light);
+    margin-bottom: 18px;
+    transition: color 1.2s ease;
+  }
+  body.dark footer .meta { color: var(--muted-dark); }
+  footer p {
+    font-family: var(--sans);
+    font-size: 14px;
+    color: var(--muted-light);
+    line-height: 1.6;
+    transition: color 1.2s ease;
+  }
+  body.dark footer p { color: var(--muted-dark); }
+
+  /* Voltage spark line */
+  .spark-wrap {
+    margin: 36px 0;
+    padding: 24px 0;
+    border-top: 1px solid var(--rule-light);
+    border-bottom: 1px solid var(--rule-light);
+    transition: border-color 1.2s ease;
+  }
+  body.dark .spark-wrap {
+    border-top-color: var(--rule-dark);
+    border-bottom-color: var(--rule-dark);
+  }
+  .spark-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted-light);
+    margin-bottom: 12px;
+    display: flex;
+    justify-content: space-between;
+    transition: color 1.2s ease;
+  }
+  body.dark .spark-label { color: var(--muted-dark); }
+  svg.spark { width: 100%; height: 120px; display: block; }
+  svg.spark path.line {
+    stroke: var(--accent-light);
+    stroke-width: 1.6;
+    fill: none;
+    transition: stroke 1.2s ease;
+  }
+  body.dark svg.spark path.line { stroke: var(--accent-dark); }
+  svg.spark path.threshold {
+    stroke: var(--muted-light);
+    stroke-width: 1;
+    stroke-dasharray: 3 3;
+    fill: none;
+    transition: stroke 1.2s ease;
+  }
+  body.dark svg.spark path.threshold { stroke: var(--muted-dark); }
+  svg.spark text {
+    font-family: var(--mono);
+    font-size: 9px;
+    fill: var(--muted-light);
+    transition: fill 1.2s ease;
+  }
+  body.dark svg.spark text { fill: var(--muted-dark); }
+
+  /* Subtle scroll cue */
+  .cue {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--muted-light);
+    z-index: 11;
+    opacity: 0;
+    transition: opacity 1.5s ease, color 1.2s ease;
+    animation: cueBob 2.4s ease-in-out infinite;
+  }
+  body.dark .cue {
+    color: var(--muted-dark);
+    opacity: 1;
+  }
+  @keyframes cueBob {
+    0%, 100% { transform: translate(-50%, 0); }
+    50% { transform: translate(-50%, -4px); }
+  }
+
+  /* Page references */
+  a.page-ref,
+  blockquote.pull cite a,
+  .finding .src a,
+  .tl-page a {
+    color: inherit;
+    text-decoration: none;
+    border-bottom: 1px dotted currentColor;
+    transition: color 0.2s ease, border-color 0.2s ease;
+  }
+  a.page-ref:hover,
+  blockquote.pull cite a:hover,
+  .finding .src a:hover,
+  .tl-page a:hover {
+    color: var(--accent-light);
+    border-bottom-color: var(--accent-light);
+  }
+  body.dark a.page-ref:hover,
+  body.dark blockquote.pull cite a:hover,
+  body.dark .finding .src a:hover,
+  body.dark .tl-page a:hover {
+    color: var(--accent-dark);
+    border-bottom-color: var(--accent-dark);
+  }
+  .tl-page {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted-light);
+    margin-top: 6px;
+    transition: color 1.2s ease;
+  }
+  body.dark .tl-page { color: var(--muted-dark); }
+
+  sup.ref { font-size: 0.7em; line-height: 0; vertical-align: super; }
+  sup.ref a {
+    font-family: var(--mono);
+    color: var(--accent-light);
+    text-decoration: none;
+    border-bottom: none;
+    padding: 0 2px;
+    letter-spacing: 0.04em;
+    transition: color 1.2s ease;
+  }
+  body.dark sup.ref a { color: var(--accent-dark); }
+
+  @media (max-width: 600px) {
+    .wrap { padding: 0 22px; }
+    .timeline::before { left: 70px; }
+    .tl-event { grid-template-columns: 64px 1fr; gap: 14px; }
+    .tl-event::before { left: 66px; }
+    .tl-body { padding-left: 18px; }
+    p.lede { font-size: 19px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="bulb-overlay" aria-hidden="true"></div>
+
+<div class="filament" aria-hidden="true">
+  <span class="dot"></span><span class="filament-text">SISTEMA · 50 Hz · ESTABLE</span>
+</div>
+
+<div class="cue" aria-hidden="true">↓ desplázate</div>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="kicker">Informe ENTSO-E · Apagón ibérico · 28 abril 2025</div>
+    <h1 class="title">La descoordinación que apagó España: <em>protecciones desalineadas</em> que ignoraron la estabilidad del sistema</h1>
+    <p class="dek">El panel de expertos europeo concluye que el peor apagón en Europa en veinte años no fue obra de un solo fallo, sino de una cadena de protecciones, ajustes y planes de defensa que nunca habían sido afinados para un sistema dominado por inversores. La luz se fue a las 12:33:24 CEST. La descoordinación venía de mucho antes.</p>
+    <div class="byline">Análisis basado en el Final Report del panel ENTSO-E · 472 páginas · publicado 28 abril 2026</div>
+  </div>
+</header>
+
+<section id="que-paso">
+  <div class="wrap">
+    <div class="section-num">01 · Lo que pasó</div>
+    <h2>Veintitrés segundos para perder una península</h2>
+    <p class="lede">A las 12:32:00 del 28 de abril de 2025, la red ibérica funcionaba dentro de parámetros<sup class="ref"><a href="informe.pdf#page=29" target="_blank" rel="noopener">p.29</a></sup>. A las 12:33:24, España y Portugal estaban a oscuras. Entre medias, una subida incontrolada de tensión, una cascada de desconexiones de generación —sobre todo solar y eólica conectada por inversores— y la pérdida de sincronismo con la red continental europea<sup class="ref"><a href="informe.pdf#page=6" target="_blank" rel="noopener">p.6</a></sup>.</p>
+
+    <p>El sistema ibérico se separó de Europa. Una pequeña zona de Francia, fronteriza, sufrió interrupciones limitadas. El resto del continente no se enteró: el disparo de las interconexiones de corriente alterna entre Francia y España aisló al sistema francés del incidente<sup class="ref"><a href="informe.pdf#page=188" target="_blank" rel="noopener">p.188</a></sup>.</p>
+
+    <blockquote class="pull">
+      «El apagón fue el resultado de múltiples factores que interactuaron: fluctuaciones de tensión y fenómenos oscilatorios, desconexiones masivas de generación —en particular recursos basados en inversores—, una cascada de desconexiones por sobretensión y, finalmente, la pérdida de sincronismo del sistema ibérico con Europa Continental.»
+      <cite>ENTSO-E · Final Report · <a href="informe.pdf#page=451" target="_blank" rel="noopener">p. 451</a></cite>
+    </blockquote>
+
+    <div class="stats">
+      <div>
+        <div class="stat-num">3</div>
+        <div class="stat-label">Escala ICS — el nivel máximo de severidad de incidente reconocido por ENTSO-E. <sup class="ref"><a href="informe.pdf#page=6" target="_blank" rel="noopener">p.6</a></sup></div>
+      </div>
+      <div>
+        <div class="stat-num">20</div>
+        <div class="stat-label">Años desde el peor apagón europeo. Este lo superó. <sup class="ref"><a href="informe.pdf#page=6" target="_blank" rel="noopener">p.6</a></sup></div>
+      </div>
+      <div>
+        <div class="stat-num">23s</div>
+        <div class="stat-label">Entre el primer evento (12:32:00) y la separación final del sistema ibérico. <sup class="ref"><a href="informe.pdf#page=29" target="_blank" rel="noopener">p.29</a></sup></div>
+      </div>
+      <div>
+        <div class="stat-num">04:00</div>
+        <div class="stat-label">Hora a la que se restauró por completo la red de transporte española al día siguiente. <sup class="ref"><a href="informe.pdf#page=6" target="_blank" rel="noopener">p.6</a></sup></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="cronologia">
+  <div class="wrap">
+    <div class="section-num">02 · Cronología del colapso</div>
+    <h2>De una maniobra rutinaria a la caída total, segundo a segundo</h2>
+    <p>El informe reconstruye el incidente con resolución de milisegundos a partir de los registros SCADA, las grabaciones de fallos y las medidas PMU aportadas por TSOs, DSOs y generadores<sup class="ref"><a href="informe.pdf#page=140" target="_blank" rel="noopener">p.140</a></sup>. Esta es la espina dorsal de la cascada.</p>
+
+    <div class="timeline">
+      <div class="tl-event">
+        <div class="tl-time">09:02</div>
+        <div class="tl-body">
+          <strong>Maniobras topológicas previas</strong>
+          <span>Se conecta la línea de 400 kV Almaraz–San Serván 1; se desconecta la reactancia Valdecaballeros REA 2. Comienza una jornada con ajustes activos de tensión y reactiva en el sur peninsular.</span>
+          <div class="tl-page"><a href="informe.pdf#page=33" target="_blank" rel="noopener">→ Informe · p. 33</a></div>
+        </div>
+      </div>
+      <div class="tl-event">
+        <div class="tl-time">12:03</div>
+        <div class="tl-body">
+          <strong>Oscilaciones detectadas</strong>
+          <span>Aparecen dos episodios oscilatorios prominentes. RTE no comunica claramente las oscilaciones; en Swissgrid no se disparan alarmas. No hay acción inmediata.</span>
+          <div class="tl-page"><a href="informe.pdf#page=433" target="_blank" rel="noopener">→ Informe · p. 433</a> · <a href="informe.pdf#page=231" target="_blank" rel="noopener">p. 231</a></div>
+        </div>
+      </div>
+      <div class="tl-event">
+        <div class="tl-time">12:05</div>
+        <div class="tl-body">
+          <strong>Reducción de intercambio transfronterizo</strong>
+          <span>Red Eléctrica pide a RTE bajar la NTC a 1.500 MW. A las 12:08, también pide cambiar el modo del enlace HVDC Baixas–Santa Llogaia. Las medidas amortiguan las oscilaciones, pero suben la tensión.</span>
+          <div class="tl-page"><a href="informe.pdf#page=433" target="_blank" rel="noopener">→ Informe · p. 433</a></div>
+        </div>
+      </div>
+      <div class="tl-event">
+        <div class="tl-time">12:32:00</div>
+        <div class="tl-body">
+          <strong>Inicio oficial del incidente</strong>
+          <span>Comienzan desconexiones rápidas de generación distribuida en el norte y sur de España (208 MW de eólica/solar) por causas en parte desconocidas. La carga neta sube 317 MW por reacción de cargas dependientes de tensión.</span>
+          <div class="tl-page"><a href="informe.pdf#page=29" target="_blank" rel="noopener">→ Informe · p. 29</a> · <a href="informe.pdf#page=13" target="_blank" rel="noopener">p. 13</a> · <a href="informe.pdf#page=117" target="_blank" rel="noopener">p. 117</a></div>
+        </div>
+      </div>
+      <div class="tl-event critical">
+        <div class="tl-time">12:32:57</div>
+        <div class="tl-body">
+          <strong>Granada — primera gran pérdida</strong>
+          <span>Un transformador 400/220 kV dispara por sobretensión en el lado de 220 kV. Se pierden 355 MW de fotovoltaica, eólica y termosolar. La tensión a 400 kV estaba en 417,9 kV. <em>Diverge</em> de los requisitos aplicables.</span>
+          <div class="tl-page"><a href="informe.pdf#page=14" target="_blank" rel="noopener">→ Informe · p. 14</a> · <a href="informe.pdf#page=144" target="_blank" rel="noopener">p. 144</a></div>
+        </div>
+      </div>
+      <div class="tl-event critical">
+        <div class="tl-time">12:33:16</div>
+        <div class="tl-body">
+          <strong>Badajoz — la cascada se acelera</strong>
+          <span>En dos subestaciones próximas se pierden 727 MW (582 + 145) de fotovoltaica y termosolar por activación de protecciones de sobretensión a tensiones entre 432 kV y 438 kV. Ambas, marcadas como divergentes.</span>
+          <div class="tl-page"><a href="informe.pdf#page=14" target="_blank" rel="noopener">→ Informe · p. 14</a> · <a href="informe.pdf#page=144" target="_blank" rel="noopener">p. 144</a></div>
+        </div>
+      </div>
+      <div class="tl-event critical">
+        <div class="tl-time">12:33:17–18</div>
+        <div class="tl-body">
+          <strong>Cascada generalizada de inversores</strong>
+          <span>En menos de un segundo caen, en grupos sucesivos: 22 + 550 + 94 + 118 + 33 + 37 + 71 MW de eólica y fotovoltaica… Los pequeños generadores embebidos &lt; 1 MW también disparan por sobretensión en gran número, según datos de dos fabricantes de inversores.</span>
+          <div class="tl-page"><a href="informe.pdf#page=117" target="_blank" rel="noopener">→ Informe · p. 117</a> · <a href="informe.pdf#page=334" target="_blank" rel="noopener">p. 334</a></div>
+        </div>
+      </div>
+      <div class="tl-event critical">
+        <div class="tl-time">12:33:21.4</div>
+        <div class="tl-body">
+          <strong>Pérdida de sincronismo</strong>
+          <span>Disparo Baixas–Vic por la protección de pérdida de sincronismo (OST). El sistema ibérico se desacopla de Europa Continental.</span>
+          <div class="tl-page"><a href="informe.pdf#page=188" target="_blank" rel="noopener">→ Informe · p. 188</a> · <a href="informe.pdf#page=191" target="_blank" rel="noopener">p. 191</a></div>
+        </div>
+      </div>
+      <div class="tl-event critical">
+        <div class="tl-time">12:33:22.7</div>
+        <div class="tl-body">
+          <strong>Caen las nucleares</strong>
+          <span>Pérdida de generación nuclear: 1.045 MW a las 12:33:22.702 y 653 MW a las 12:33:23.515. Bombas de almacenamiento se desconectan; en Portugal se aplica deslastre de bombeo (–207 MW).</span>
+          <div class="tl-page"><a href="informe.pdf#page=117" target="_blank" rel="noopener">→ Informe · p. 117</a> · <a href="informe.pdf#page=120" target="_blank" rel="noopener">p. 120</a></div>
+        </div>
+      </div>
+      <div class="tl-event critical">
+        <div class="tl-time">12:33:24</div>
+        <div class="tl-body">
+          <strong>Apagón total en Iberia</strong>
+          <span>El sistema colapsa. España y Portugal quedan a oscuras. Una zona limitada del sur de Francia sufre disrupciones temporales.</span>
+          <div class="tl-page"><a href="informe.pdf#page=6" target="_blank" rel="noopener">→ Informe · p. 6</a></div>
+        </div>
+      </div>
+      <div class="tl-event">
+        <div class="tl-time">00:22 (+1d)</div>
+        <div class="tl-body">
+          <strong>Portugal restaurado</strong>
+          <span>La red portuguesa se restablece a las 00:22 del 29 de abril. España completa la restauración del sistema de transporte a las 04:00.</span>
+          <div class="tl-page"><a href="informe.pdf#page=6" target="_blank" rel="noopener">→ Informe · p. 6</a> · <a href="informe.pdf#page=336" target="_blank" rel="noopener">p. 336</a></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="spark-wrap">
+      <div class="spark-label">
+        <span>Tensión 400 kV — perfil ilustrativo de la subida descontrolada</span>
+        <span>↑ 1,1 p.u. (440 kV)</span>
+      </div>
+      <svg class="spark" viewBox="0 0 800 120" preserveAspectRatio="none" aria-hidden="true">
+        <path class="threshold" d="M0,40 L800,40"/>
+        <text x="6" y="36">Umbral 1.1 p.u.</text>
+        <path class="line" d="M0,80 L80,82 L160,79 L240,75 L300,68 L360,55 L420,42 L460,38 L500,30 L540,25 L560,18 L580,16 L600,22 L620,40 L640,75 L660,105 L700,118 L800,118"/>
+        <text x="600" y="14">12:33:16 sobretensión</text>
+        <text x="660" y="115">colapso</text>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<section id="causa">
+  <div class="wrap">
+    <div class="section-num">03 · La causa que da nombre al titular</div>
+    <h2>Protecciones que se dispararon antes de tiempo, o sin estar alineadas con el sistema</h2>
+
+    <p class="lede">En el punto 7 de las conclusiones, el panel es explícito: <strong>muchos ajustes de protección frente a sobretensión divergían de los requisitos aplicables o no estaban alineados con las necesidades del sistema</strong><sup class="ref"><a href="informe.pdf#page=334" target="_blank" rel="noopener">p.334</a></sup>. Generadores —o sus transformadores y líneas de evacuación— se desconectaron en su nivel de tensión antes de que se cumplieran las condiciones de tensión y temporización en el punto de conexión a transporte.</p>
+
+    <blockquote class="pull">
+      «Esto provocó una pérdida de absorción de potencia reactiva, lo que a su vez hizo que la tensión subiera abruptamente.»
+      <cite>ENTSO-E · Final Report · <a href="informe.pdf#page=334" target="_blank" rel="noopener">p. 334</a> · hallazgo h_005</cite>
+    </blockquote>
+
+    <p>Dicho de otra forma: las protecciones, diseñadas para preservar el activo individual, dispararon en cadena y empujaron al sistema en la dirección contraria a su estabilidad. La generación capaz de absorber reactiva —y, por tanto, de bajar tensión— se fue desconectando justo cuando más falta hacía.</p>
+
+    <p>El panel también señala que durante la investigación se encontraron <strong>interpretaciones distintas de los requisitos aplicables entre las partes implicadas</strong>, particularmente en el caso de los ajustes de protección de sobretensión<sup class="ref"><a href="informe.pdf#page=454" target="_blank" rel="noopener">p.454</a></sup>. La frontera entre lo que era obligatorio, lo que era recomendable y lo que cada cual entendía no estaba clara.</p>
+  </div>
+</section>
+
+<section id="reactiva">
+  <div class="wrap">
+    <div class="section-num">04 · El control de tensión que no respondió</div>
+    <h2>Recursos que existían sobre el papel, pero no en el control en tiempo real</h2>
+
+    <p>Dos hechos técnicos refuerzan la lectura de "descoordinación":</p>
+
+    <div class="findings">
+      <div class="finding">
+        <div class="finding-tag">Renovables · modo factor de potencia fijo</div>
+        <h3>Los generadores renovables seguían un control con factor de potencia fijo y no podían responder a las fluctuaciones de tensión</h3>
+        <p>En lugar de un control en tensión —que ajusta la reactiva al perfil del nudo—, se operaba un control en factor de potencia, que es ciego al estado de la red.</p>
+        <div class="src">Final Report · <a href="informe.pdf#page=220" target="_blank" rel="noopener">p. 220</a> · hallazgo h_019</div>
+      </div>
+      <div class="finding">
+        <div class="finding-tag">Convencional · marco PO 7.4</div>
+        <h3>Las plantas síncronas convencionales operaban bajo el marco por defecto del Procedimiento de Operación 7.4</h3>
+        <p>Solo una planta participaba —voluntaria y temporalmente— en un proyecto piloto de control directo de tensión por consigna. El resto del parque convencional no estaba en modo de control de tensión activo.</p>
+        <div class="src">Final Report · <a href="informe.pdf#page=220" target="_blank" rel="noopener">p. 220</a> · hallazgo h_019</div>
+      </div>
+      <div class="finding">
+        <div class="finding-tag">Mitigaciones contraproducentes</div>
+        <h3>Las medidas que amortiguaron las oscilaciones contribuyeron, a la vez, a subir la tensión</h3>
+        <p>El cambio de modo del enlace HVDC y la reducción de intercambios atajaron las oscilaciones, pero su naturaleza llevó a una elevación de la tensión en el sistema ibérico.</p>
+        <div class="src">Final Report · <a href="informe.pdf#page=12" target="_blank" rel="noopener">p. 12</a> · hallazgo h_023</div>
+      </div>
+      <div class="finding">
+        <div class="finding-tag">Observabilidad limitada</div>
+        <h3>El comportamiento de la pequeña generación embebida es opaco para los operadores</h3>
+        <p>Los disparos por sobretensión de unidades fotovoltaicas pequeñas conectadas a distribución —numerosos, según datos de dos fabricantes de inversores— solo pudieron estimarse a posteriori. La cascada incluyó un componente que el operador no podía ver en tiempo real.</p>
+        <div class="src">Final Report · <a href="informe.pdf#page=451" target="_blank" rel="noopener">p. 451</a> · hallazgo h_010</div>
+      </div>
+      <div class="finding">
+        <div class="finding-tag">Plan de defensa</div>
+        <h3>Los planes de defensa actuales no estaban equipados para detener una cascada por sobretensión rápida</h3>
+        <p>Aunque incluyen elementos relacionados con la tensión, no fueron suficientes para frenar un colapso por sobretensión en alta proporción de generación distribuida (DER).</p>
+        <div class="src">Final Report · <a href="informe.pdf#page=464" target="_blank" rel="noopener">p. 464</a> · hallazgo h_014</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="datos">
+  <div class="wrap">
+    <div class="section-num">05 · Lo que el panel no pudo ver</div>
+    <h2>Datos incompletos, heterogéneos y, en algunos casos, perdidos</h2>
+
+    <p>El panel reconoce limitaciones de datos. La recopilación fue "muy desafiante": parte de la información llegó incompleta, fuera de plazo o con formatos heterogéneos<sup class="ref"><a href="informe.pdf#page=7" target="_blank" rel="noopener">p.7</a></sup><sup class="ref"><a href="informe.pdf#page=451" target="_blank" rel="noopener">p.451</a></sup>.</p>
+
+    <blockquote class="pull">
+      «El panel no verifica, audita ni valida de forma independiente la completitud, exactitud o fiabilidad de las fuentes de datos externas… Este informe no pretende asignar responsabilidad a ninguna parte y no debe interpretarse en ese sentido.»
+      <cite>ENTSO-E · Final Report · <a href="informe.pdf#page=2" target="_blank" rel="noopener">p. 2</a></cite>
+    </blockquote>
+
+    <p>Esa cautela es importante. El informe es técnico —no jurídico— y se posiciona expresamente al margen de cualquier procedimiento de instrucción o sanción. Pero deja sobre la mesa una observación que sí es operativa: <strong>sin obligaciones claras de aportar datos completos y de calidad, futuras investigaciones serán de nuevo lentas y parciales</strong>.</p>
+  </div>
+</section>
+
+<section id="recomendaciones">
+  <div class="wrap">
+    <div class="section-num">06 · Lo que pide el panel</div>
+    <h2>Una agenda regulatoria, técnica y de coordinación</h2>
+    <p>Las recomendaciones del informe (capítulos 6 y 7) se agrupan en bloques con responsables (TSOs, DSOs, reguladores) y prioridad asignada<sup class="ref"><a href="informe.pdf#page=455" target="_blank" rel="noopener">p.455</a></sup>. Una selección de las más estructurales:</p>
+
+    <div class="findings">
+      <div class="reco">
+        <div class="reco-num">R1</div>
+        <div class="reco-text"><strong>Modo de control de tensión</strong> — revisar y armonizar los modos de control en generadores, especialmente en renovables, para superar el factor de potencia fijo. <sup class="ref"><a href="informe.pdf#page=456" target="_blank" rel="noopener">p.456</a></sup></div>
+      </div>
+      <div class="reco">
+        <div class="reco-num">R7</div>
+        <div class="reco-text"><strong>Monitorización dinámica y detección operacional de oscilaciones</strong> — capacidades en tiempo real con criterios de comunicación claros entre TSOs. <sup class="ref"><a href="informe.pdf#page=459" target="_blank" rel="noopener">p.459</a></sup></div>
+      </div>
+      <div class="reco">
+        <div class="reco-num">R8</div>
+        <div class="reco-text"><strong>Indicadores de estabilidad de tensión y de cambio rápido</strong> — desarrollar guía y umbrales que permitan actuar antes de que se encadene el colapso. <sup class="ref"><a href="informe.pdf#page=455" target="_blank" rel="noopener">p.455</a></sup></div>
+      </div>
+      <div class="reco">
+        <div class="reco-num">R14</div>
+        <div class="reco-text"><strong>Gobernanza de datos en investigaciones cruzadas TSO/DSO/generador</strong> — obligaciones, plazos y formatos comunes para futuros incidentes. <sup class="ref"><a href="informe.pdf#page=462" target="_blank" rel="noopener">p.462</a></sup></div>
+      </div>
+      <div class="reco">
+        <div class="reco-num">R18</div>
+        <div class="reco-text"><strong>Pruebas reales de black-start e isla periódicas</strong> — al menos cada tres años, con índice de preparación y validación del TSO antes de renovar la certificación. <sup class="ref"><a href="informe.pdf#page=464" target="_blank" rel="noopener">p.464</a></sup></div>
+      </div>
+      <div class="reco">
+        <div class="reco-num">R19</div>
+        <div class="reco-text"><strong>Entrenamiento conjunto TSO–DSO–SGUs</strong> — clarificar y ensayar roles en restauración con frecuencia establecida. <sup class="ref"><a href="informe.pdf#page=465" target="_blank" rel="noopener">p.465</a></sup></div>
+      </div>
+      <div class="reco">
+        <div class="reco-num">DEF</div>
+        <div class="reco-text"><strong>Plan de defensa modernizado</strong> — adaptado a un sistema con alta proporción de DER, capaz de detectar y atajar anomalías por sobretensión rápida. <sup class="ref"><a href="informe.pdf#page=464" target="_blank" rel="noopener">p.464</a></sup></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="lectura">
+  <div class="wrap">
+    <div class="section-num">07 · Lectura</div>
+    <h2>Una red que ya no se parece a la que protegía</h2>
+
+    <p class="lede">El apagón ibérico se cuenta a menudo como una historia de generación renovable. El informe del panel europeo pone el foco en otro lugar: en el <strong>conjunto de reglas, ajustes, modos y planes</strong> que se diseñaron pensando en una red dominada por generación síncrona y que, llegado el día, no respondió como se necesitaba.</p>
+
+    <p>Los inversores se desconectaron porque sus protecciones decían que debían hacerlo. Los modos de control existían, pero no estaban activos. Las medidas que se tomaron sirvieron para una cosa —oscilaciones— y empeoraron otra —tensión—. La pequeña generación embebida cayó en silencio, fuera de la pantalla del operador. Los planes de defensa atendían escenarios que no eran este.</p>
+
+    <p>De ahí la palabra que sostiene el titular: <strong>descoordinación</strong>. No la de un actor incumpliendo sus obligaciones, sino la de un sistema cuyas piezas habían quedado desafinadas frente a la red real. El informe lo dice sin rodeos en su árbol causa-raíz<sup class="ref"><a href="informe.pdf#page=331" target="_blank" rel="noopener">p.331</a></sup>, y deja a reguladores y operadores la tarea de afinar.</p>
+
+    <p>La luz volvió a las pocas horas. La pregunta política es si volverá a fallar antes de que se rehagan los ajustes.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="meta">Fuente · Metodología</div>
+    <p>
+      Elaborado a partir del <em>Final Report</em> del Expert Panel de ENTSO-E sobre el incidente del 28 de abril de 2025 en España y Portugal (472 páginas). Las cifras y citas proceden del propio informe; los segundos exactos de la cascada provienen de las tablas de secuencia de eventos (pp. 117-120) y de desconexiones de generación (p. 144). El informe no asigna responsabilidad jurídica y advierte de limitaciones en la calidad y completitud de los datos aportados por terceros.
+    </p>
+    <p style="margin-top:18px;">Análisis: redacción a partir de findings.json · timeline.json · table_highlights.json (Outputs).</p>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    const body = document.body;
+    const filamentText = document.querySelector('.filament-text');
+    const cue = document.querySelector('.cue');
+
+    // Show scroll cue softly during the white phase
+    setTimeout(() => { if (cue) cue.style.opacity = '0.6'; }, 1200);
+
+    // 5 seconds in white, then a flicker, then dark.
+    setTimeout(() => {
+      body.classList.add('flicker');
+      // text simulation
+      const texts = [
+        'SISTEMA · 50 Hz · ESTABLE',
+        'SISTEMA · TENSIÓN ↑',
+        'PROTECCIÓN · OV TRIP',
+        'SINCRONISMO · PERDIDO',
+        'SISTEMA · APAGADO'
+      ];
+      let i = 0;
+      const ticker = setInterval(() => {
+        i++;
+        if (filamentText && texts[i]) filamentText.textContent = texts[i];
+        if (i >= texts.length - 1) clearInterval(ticker);
+      }, 520);
+
+      // After flicker animation completes: lock in dark mode
+      setTimeout(() => {
+        body.classList.remove('flicker');
+        body.classList.add('dark');
+        if (filamentText) filamentText.textContent = 'MODO NOCHE · 12:33:24 CEST';
+      }, 2600);
+    }, 5000);
+  })();
+</script>
+</body>
+</html>
