@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>La Generalitat tramitó 2.219 millones por enriquecimiento injusto · Informe Sindicatura de Comptes 2024</title>
+<meta name="description" content="La Sindicatura de Comptes detecta 596 expedientes de resarcimiento por enriquecimiento injusto en 2024 por 2.219,6 millones de euros. El 88,5% corresponde a Sanidad. Análisis visual del informe de fiscalización de la contratación de la Generalitat Valenciana.">
+<meta name="author" content="David Fernández Sancho">
+
+<!-- Open Graph -->
+<meta property="og:type" content="article">
+<meta property="og:locale" content="es_ES">
+<meta property="og:site_name" content="Informe Sindicatura GVA 2024">
+<meta property="og:title" content="La Generalitat tramitó 2.219 millones para pagar gastos ejecutados sin seguir el procedimiento legal de contratación">
+<meta property="og:description" content="596 expedientes de enriquecimiento injusto en 2024. El 88,5% del importe corresponde a Sanidad. Análisis visual del informe de la Sindicatura de Comptes de la Comunitat Valenciana.">
+<meta property="og:image" content="og.png">
+<meta property="og:image:secure_url" content="og.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="2.219 M€: importe tramitado en 596 expedientes de enriquecimiento injusto por la Generalitat Valenciana en 2024 según la Sindicatura de Comptes">
+<meta property="og:url" content="informe_visual.html">
+<meta property="article:author" content="David Fernández Sancho">
+<meta property="article:published_time" content="2026-05-09">
+<meta property="article:section" content="Datos · Contratación pública">
+<meta property="article:tag" content="Generalitat Valenciana">
+<meta property="article:tag" content="Sindicatura de Comptes">
+<meta property="article:tag" content="Contratación pública">
+<meta property="article:tag" content="Enriquecimiento injusto">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="La Generalitat tramitó 2.219 millones por enriquecimiento injusto en 2024">
+<meta name="twitter:description" content="596 expedientes de resarcimiento por enriquecimiento injusto en un solo ejercicio. El 88,5% del importe corresponde a Sanidad.">
+<meta name="twitter:image" content="og.png">
+<meta name="twitter:image:alt" content="2.219 M€ tramitados en 596 expedientes de enriquecimiento injusto por la Generalitat Valenciana en 2024 según la Sindicatura de Comptes">
+
+<link rel="canonical" href="informe_visual.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Source+Serif+4:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#fafaf7;
+    --ink:#1a1a1a;
+    --muted:#6b6b6b;
+    --rule:#e6e3dc;
+    --accent:#c8331c;
+    --accent-soft:#fde8e3;
+    --good:#1f6f4a;
+    --warn:#b87900;
+    --serif:'Source Serif 4','Georgia',serif;
+    --sans:'Inter','Helvetica Neue','Arial',sans-serif;
+    --mono:'JetBrains Mono','SF Mono','Menlo',Consolas,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:var(--sans);
+    font-size:17px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  .container{max-width:760px;margin:0 auto;padding:0 24px}
+  .wide{max-width:1040px;margin:0 auto;padding:0 24px}
+
+  /* HEADER */
+  header.masthead{
+    border-bottom:1px solid var(--rule);
+    padding:14px 0;
+    background:#fff;
+    position:sticky;
+    top:0;
+    z-index:10;
+  }
+  .masthead-inner{display:flex;justify-content:space-between;align-items:center;font-size:11px;color:var(--muted);letter-spacing:.16em;text-transform:uppercase;font-family:var(--mono);font-weight:500;gap:24px}
+  .brand{color:var(--ink);font-weight:700;letter-spacing:.18em;font-size:11px}
+  .masthead-meta{text-align:right;color:var(--muted);font-size:10px}
+  .masthead-meta a{color:var(--accent);text-decoration:none}
+  .masthead-meta a:hover{text-decoration:underline}
+
+  /* HERO */
+  .hero{padding:80px 0 60px;border-bottom:1px solid var(--rule)}
+  .hero .label{
+    color:var(--accent);
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:.22em;
+    text-transform:uppercase;
+    font-weight:700;
+    margin-bottom:24px;
+  }
+  .hero h1{
+    font-family:var(--serif);
+    font-size:54px;
+    line-height:1.08;
+    font-weight:700;
+    letter-spacing:-.01em;
+    margin-bottom:28px;
+  }
+  .hero h1 em{font-style:normal;color:var(--accent)}
+  .hero .deck{
+    font-size:21px;
+    line-height:1.5;
+    color:#333;
+    max-width:680px;
+    font-weight:400;
+  }
+  .hero .meta{
+    margin-top:36px;
+    display:flex;
+    gap:24px;
+    flex-wrap:wrap;
+    font-size:12px;
+    color:var(--muted);
+    font-family:var(--mono);
+    letter-spacing:.04em;
+    border-top:1px solid var(--rule);
+    padding-top:20px;
+  }
+  .hero .meta strong{color:var(--ink);font-weight:700}
+  .hero .meta a{color:var(--accent);text-decoration:none}
+  .hero .meta a:hover{text-decoration:underline}
+
+  /* HERO STAT */
+  .heroStat{
+    margin:60px auto 0;
+    max-width:920px;
+    background:#fff;
+    border:1px solid var(--rule);
+    padding:48px 40px;
+    display:grid;
+    grid-template-columns:auto 1fr;
+    gap:48px;
+    align-items:center;
+  }
+  .heroStat .num{
+    font-family:var(--mono);
+    font-size:108px;
+    line-height:.9;
+    font-weight:700;
+    color:var(--accent);
+    letter-spacing:-.04em;
+    white-space:nowrap;
+  }
+  .heroStat .num small{font-size:42px;vertical-align:super;font-weight:500;margin-left:6px}
+  .heroStat .desc{font-size:18px;line-height:1.5}
+  .heroStat .desc strong{font-weight:700}
+  .heroStat .source{
+    margin-top:12px;
+    font-size:11px;
+    color:var(--muted);
+    text-transform:uppercase;
+    letter-spacing:.1em;
+    font-family:var(--mono);
+  }
+  .heroStat .source a{color:var(--accent);text-decoration:none}
+  .heroStat .source a:hover{text-decoration:underline}
+  @media (max-width:680px){
+    .heroStat{grid-template-columns:1fr;gap:24px;padding:32px 24px}
+    .heroStat .num{font-size:74px}
+    .heroStat .num small{font-size:30px}
+  }
+
+  /* TOC */
+  .toc{
+    background:#fff;
+    border-bottom:1px solid var(--rule);
+  }
+  .toc-inner{
+    max-width:1040px;
+    margin:0 auto;
+    padding:14px 24px;
+    display:flex;
+    gap:24px;
+    flex-wrap:nowrap;
+    overflow-x:auto;
+    font-family:var(--mono);
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:.16em;
+    font-weight:500;
+    scrollbar-width:none;
+  }
+  .toc-inner::-webkit-scrollbar{display:none}
+  .toc-inner a{color:var(--muted);text-decoration:none;white-space:nowrap;flex-shrink:0}
+  .toc-inner a:hover{color:var(--accent)}
+  .toc-inner .num{color:var(--accent);margin-right:6px;font-weight:700}
+
+  /* SECTIONS */
+  section{padding:72px 0;border-bottom:1px solid var(--rule)}
+  h2.section-title{
+    font-family:var(--mono);
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:.22em;
+    font-weight:700;
+    color:var(--accent);
+    margin-bottom:14px;
+  }
+  h2.section-title + h3{
+    font-family:var(--serif);
+    font-size:38px;
+    line-height:1.15;
+    font-weight:700;
+    margin-bottom:32px;
+    letter-spacing:-.01em;
+  }
+  p{margin-bottom:18px;font-size:17px}
+  p.lede{font-size:20px;line-height:1.55;color:#222}
+
+  /* PDF CITATION */
+  .pg{
+    display:inline-block;
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    color:var(--muted);
+    text-decoration:none;
+    border-bottom:1px dotted #c4bfb3;
+    padding-bottom:1px;
+    margin-left:4px;
+    transition:color .15s,border-color .15s;
+  }
+  .pg:hover{color:var(--accent);border-color:var(--accent)}
+  .pg::before{content:"↗ "}
+
+  /* PULL QUOTE */
+  .pull{
+    font-family:var(--serif);
+    font-size:30px;
+    line-height:1.25;
+    font-weight:600;
+    border-left:3px solid var(--accent);
+    padding:8px 0 8px 28px;
+    margin:36px 0;
+    color:#111;
+  }
+  .pull em{font-style:normal;color:var(--accent)}
+  .pull cite{display:block;margin-top:14px;font-family:var(--mono);font-size:11px;color:var(--muted);font-style:normal;font-weight:500;letter-spacing:.12em;text-transform:uppercase}
+
+  /* DATA CARDS */
+  .grid{display:grid;gap:24px;margin:32px 0}
+  .grid.cols-2{grid-template-columns:repeat(2,1fr)}
+  .grid.cols-3{grid-template-columns:repeat(3,1fr)}
+  @media (max-width:720px){.grid.cols-2,.grid.cols-3{grid-template-columns:1fr}}
+
+  .stat{
+    background:#fff;
+    border:1px solid var(--rule);
+    padding:28px 24px;
+  }
+  .stat .big{
+    font-family:var(--mono);
+    font-size:46px;
+    line-height:1;
+    font-weight:700;
+    color:var(--ink);
+    letter-spacing:-.03em;
+  }
+  .stat .big.accent{color:var(--accent)}
+  .stat .big.good{color:var(--good)}
+  .stat .big small{font-size:24px;font-weight:500;vertical-align:super;margin-left:2px}
+  .stat .lbl{margin-top:10px;font-size:14px;color:var(--muted);line-height:1.45}
+  .stat .lbl strong{color:var(--ink);font-weight:600}
+  .stat .src{margin-top:8px;font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:var(--muted);text-transform:uppercase}
+  .stat .src a{color:var(--muted);text-decoration:none;border-bottom:1px dotted #c4bfb3}
+  .stat .src a:hover{color:var(--accent);border-color:var(--accent)}
+
+  /* CASE CARDS */
+  .case{
+    background:#fff;
+    border:1px solid var(--rule);
+    padding:32px 32px 28px;
+    margin:24px 0;
+    position:relative;
+  }
+  .case .tag{
+    display:inline-block;
+    font-family:var(--mono);
+    font-size:10px;
+    letter-spacing:.18em;
+    text-transform:uppercase;
+    font-weight:700;
+    color:var(--accent);
+    background:var(--accent-soft);
+    padding:6px 10px;
+    margin-bottom:16px;
+  }
+  .case h4{
+    font-family:var(--serif);
+    font-size:24px;
+    line-height:1.25;
+    font-weight:700;
+    margin-bottom:14px;
+    letter-spacing:-.01em;
+  }
+
+  /* BAR CHART */
+  .chart{margin:28px 0;background:#fff;border:1px solid var(--rule);padding:28px}
+  .chart h5{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.18em;color:var(--muted);font-weight:700;margin-bottom:8px}
+  .chart .ttl{font-family:var(--serif);font-size:22px;font-weight:700;margin-bottom:20px;line-height:1.25}
+  .bar-row{display:grid;grid-template-columns:200px 1fr 110px;gap:14px;align-items:center;margin:10px 0;font-size:14px}
+  .bar-row .lbl{color:#333}
+  .bar-row .val{font-family:var(--mono);font-weight:700;text-align:right;font-size:15px;letter-spacing:-.02em}
+  .bar{height:22px;background:#f0ede5;position:relative;overflow:hidden}
+  .bar > span{display:block;height:100%;background:var(--accent)}
+  .bar.good > span{background:var(--good)}
+  .bar.muted > span{background:#aaa}
+  @media (max-width:560px){.bar-row{grid-template-columns:1fr;gap:4px}.bar-row .val{text-align:left}}
+
+  /* CALLOUT */
+  .callout{
+    background:#fff8ef;
+    border-left:3px solid var(--warn);
+    padding:20px 24px;
+    margin:28px 0;
+    font-size:15px;
+  }
+  .callout strong{color:var(--warn)}
+
+  /* FAILURES LIST */
+  .families{
+    display:grid;
+    gap:18px;
+    margin:24px 0;
+  }
+  .family{
+    background:#fff;
+    border:1px solid var(--rule);
+    padding:24px 26px;
+  }
+  .family .ftag{
+    font-family:var(--mono);
+    font-size:10px;
+    letter-spacing:.18em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:700;
+    margin-bottom:8px;
+  }
+  .family .fttl{
+    font-family:var(--serif);
+    font-size:20px;
+    font-weight:700;
+    line-height:1.25;
+    margin-bottom:14px;
+    letter-spacing:-.005em;
+  }
+  .family ul{list-style:none;padding:0;margin:0}
+  .family li{
+    padding:10px 0 10px 22px;
+    border-top:1px solid var(--rule);
+    position:relative;
+    font-size:15px;
+    line-height:1.5;
+    color:#333;
+  }
+  .family li:first-child{border-top:none;padding-top:4px}
+  .family li::before{
+    content:"";
+    position:absolute;
+    left:4px;
+    top:18px;
+    width:6px;
+    height:6px;
+    background:var(--accent);
+  }
+  .family li:first-child::before{top:12px}
+
+  /* DONUT-LIKE STACK */
+  .stack{
+    display:flex;
+    height:46px;
+    background:#f0ede5;
+    margin:18px 0 6px;
+    font-family:var(--mono);
+    font-size:12px;
+    color:#fff;
+    font-weight:700;
+    letter-spacing:-.02em;
+  }
+  .stack > div{display:flex;align-items:center;padding:0 12px;white-space:nowrap;overflow:hidden}
+  .stack-legend{font-size:12px;color:var(--muted);font-family:var(--mono);letter-spacing:.06em;display:flex;gap:18px;flex-wrap:wrap;margin-bottom:6px}
+
+  /* RECAP TABLE */
+  table.findings{
+    width:100%;
+    border-collapse:collapse;
+    margin:24px 0;
+    font-size:14px;
+    background:#fff;
+    border:1px solid var(--rule);
+  }
+  table.findings th,table.findings td{
+    text-align:left;
+    padding:14px 16px;
+    border-bottom:1px solid var(--rule);
+    vertical-align:top;
+  }
+  table.findings th{
+    background:#f5f2ea;
+    font-family:var(--mono);
+    font-size:10px;
+    text-transform:uppercase;
+    letter-spacing:.16em;
+    color:var(--muted);
+    font-weight:700;
+  }
+  table.findings tr:last-child td{border-bottom:none}
+  table.findings .pct{font-family:var(--mono);font-weight:700;color:var(--accent);font-size:15px;white-space:nowrap;letter-spacing:-.03em}
+  table.findings .pgcell{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.06em;white-space:nowrap}
+  table.findings .pgcell a{color:var(--muted);text-decoration:none;border-bottom:1px dotted #c4bfb3}
+  table.findings .pgcell a:hover{color:var(--accent);border-color:var(--accent)}
+
+  /* CLOSER */
+  .closer{
+    background:#111;
+    color:#fff;
+    padding:80px 0;
+  }
+  .closer h2.section-title{color:var(--accent)}
+  .closer h3{
+    font-family:var(--serif);
+    font-size:42px;
+    line-height:1.15;
+    font-weight:700;
+    letter-spacing:-.01em;
+    margin-bottom:24px;
+    color:#fff;
+  }
+  .closer p{color:#cfcdc7;font-size:18px}
+  .closer em{color:var(--accent);font-style:normal}
+
+  /* FOOTER */
+  footer{
+    padding:40px 0;
+    font-size:13px;
+    color:var(--muted);
+    text-align:center;
+    border-top:1px solid var(--rule);
+  }
+  footer a{color:var(--accent);text-decoration:none}
+  footer a:hover{text-decoration:underline}
+  footer .src-link{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase}
+  footer .credits{margin-top:18px;font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--muted);line-height:1.7}
+  footer .credits strong{color:#333;font-weight:700}
+
+  /* SUPPORT BANNER */
+  .support{
+    background:#111;
+    color:#fff;
+    border-top:1px solid #000;
+    border-bottom:1px solid #000;
+    padding:36px 0;
+  }
+  .support-inner{
+    display:grid;
+    grid-template-columns:1fr auto;
+    gap:36px;
+    align-items:center;
+  }
+  .support-kicker{
+    font-family:var(--mono);
+    font-size:10px;
+    letter-spacing:.22em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:700;
+    margin-bottom:8px;
+  }
+  .support-title{
+    font-family:var(--serif);
+    font-size:22px;
+    line-height:1.25;
+    font-weight:700;
+    color:#fff;
+    margin-bottom:8px;
+    letter-spacing:-.005em;
+  }
+  .support-desc{
+    font-size:14px;
+    color:#bdbab3;
+    line-height:1.5;
+    margin-bottom:0;
+    max-width:520px;
+  }
+  .support-ctas{
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+  }
+  .btn{
+    display:inline-block;
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    font-weight:700;
+    padding:14px 22px;
+    text-decoration:none;
+    transition:transform .12s ease, background .12s ease, color .12s ease;
+    border:1px solid transparent;
+    white-space:nowrap;
+  }
+  .btn:hover{transform:translateY(-1px)}
+  .btn-primary{background:var(--accent);color:#fff}
+  .btn-primary:hover{background:#a82a16}
+  .btn-ghost{background:transparent;color:#fff;border-color:#444}
+  .btn-ghost:hover{background:#fff;color:#111;border-color:#fff}
+  @media (max-width:720px){
+    .support-inner{grid-template-columns:1fr;gap:20px}
+  }
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="wide masthead-inner">
+    <span class="brand">INFORME SINDICATURA DE COMPTES · GVA 2024</span>
+    <span class="masthead-meta"><a href="informe_gva_2024.pdf" target="_blank">informe_gva_2024.pdf ↗</a></span>
+  </div>
+</header>
+
+<nav class="toc">
+  <div class="toc-inner">
+    <a href="#agujero"><span class="num">01</span>Agujero</a>
+    <a href="#sanidad"><span class="num">02</span>Sanidad</a>
+    <a href="#contratar"><span class="num">03</span>Contratar primero</a>
+    <a href="#adjudicacion"><span class="num">04</span>Adjudicación</a>
+    <a href="#ejecucion"><span class="num">05</span>Ejecución</a>
+    <a href="#emergencia"><span class="num">06</span>Emergencia · DANA</a>
+    <a href="#comunicacion"><span class="num">07</span>Comunicación</a>
+    <a href="#reincidencia"><span class="num">08</span>Reincidencia</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="container">
+    <div class="label">Contratación pública · Generalitat Valenciana 2024</div>
+    <h1>La Generalitat tramitó <em>2.219 millones</em> para pagar gastos ejecutados sin seguir el procedimiento legal de contratación</h1>
+    <p class="deck">La Sindicatura de Comptes detecta 596 expedientes de resarcimiento por enriquecimiento injusto en 2024, casi nueve de cada diez euros en Sanidad, y vuelve a señalar fallos en adjudicaciones, controles, emergencias y comunicación de contratos.</p>
+    <div class="meta">
+      <span><strong>FUENTE</strong> Sindicatura de Comptes de la Comunitat Valenciana</span>
+      <span><strong>DOC</strong> <a href="informe_gva_2024.pdf" target="_blank">Informe d’auditoria de compliment de legalitat 2024</a></span>
+      <span><strong>EJERCICIO</strong> 2024</span>
+    </div>
+  </div>
+
+  <div class="wide">
+    <div class="heroStat">
+      <div class="num">2.219,6<small>M€</small></div>
+      <div>
+        <div class="desc">tramitados en <strong>596 expedientes de resarcimiento por enriquecimiento injusto</strong> en 2024 — gastos ejecutados prescindiendo del procedimiento legalmente establecido</div>
+        <div class="source">Conclusiones del informe · 2.1 Incidencias comunes <a href="informe_gva_2024.pdf#page=7" target="_blank">↗ pág. 7</a></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 01 EL AGUJERO -->
+<section id="agujero">
+  <div class="container">
+    <h2 class="section-title">01 · El agujero de los 2.219 millones</h2>
+    <h3>Qué es el enriquecimiento injusto y por qué este dato no es una anécdota</h3>
+    <p class="lede">No son sobrecostes ni necesariamente corrupción. Son pagos para evitar que la Administración se quede sin abonar servicios u obligaciones que ya ha recibido, pero que se ejecutaron sin seguir correctamente el procedimiento legal o presupuestario.</p>
+    <p>Lo que la Sindicatura subraya es que detrás del enriquecimiento injusto hay un patrón muy concreto: gastos comprometidos por encima de los créditos autorizados en el presupuesto y ejecutados <strong>prescindiendo del procedimiento legalmente establecido</strong>, en este caso la normativa de contratación administrativa y de hacienda pública (artículos 39.4 de la Ley 1/2015, 47.1 de la Ley 39/2015 y 39.2.b de la LCSP)<a class="pg" href="informe_gva_2024.pdf#page=7" target="_blank">pág. 7</a></p>
+
+    <div class="grid cols-3">
+      <div class="stat">
+        <div class="big accent">596</div>
+        <div class="lbl"><strong>expedientes de resarcimiento</strong> por enriquecimiento injusto tramitados durante 2024</div>
+        <div class="src"><a href="informe_gva_2024.pdf#page=7" target="_blank">↗ pág. 7</a></div>
+      </div>
+      <div class="stat">
+        <div class="big accent">2.219,6<small>M€</small></div>
+        <div class="lbl">importe total tramitado por esa vía en un solo ejercicio</div>
+        <div class="src"><a href="informe_gva_2024.pdf#page=7" target="_blank">↗ pág. 7</a></div>
+      </div>
+      <div class="stat">
+        <div class="big accent">88,5<small>%</small></div>
+        <div class="lbl">corresponde a la <strong>Conselleria de Sanitat</strong></div>
+        <div class="src"><a href="informe_gva_2024.pdf#page=7" target="_blank">↗ pág. 7</a></div>
+      </div>
+    </div>
+
+    <div class="pull">
+      La vía excepcional se ha convertido en un <em>síntoma estructural</em>: la Sindicatura recuerda que sus informes anteriores ya habían puesto de manifiesto reiteradamente las mismas incidencias en legalidad y contabilización
+      <cite>2.1 · Incidencias comunes <a href="informe_gva_2024.pdf#page=7" target="_blank" style="color:var(--accent);text-decoration:none">pág. 7</a></cite>
+    </div>
+  </div>
+</section>
+
+<!-- SUPPORT BANNER -->
+<aside class="support">
+  <div class="container support-inner">
+    <div class="support-text">
+      <div class="support-kicker">Análisis independiente</div>
+      <div class="support-title">Si te interesa este tipo de trabajo, ayúdame a seguir publicándolo</div>
+      <p class="support-desc">Estos análisis los hago en abierto y sin redacción detrás. Si quieres que sigan saliendo, puedes apoyarme con una suscripción mensual o invitándome a un café puntual.</p>
+    </div>
+    <div class="support-ctas">
+      <a class="btn btn-primary" href="https://www.patreon.com/cw/naroh/membership" target="_blank" rel="noopener">Suscríbete en Patreon</a>
+      <a class="btn btn-ghost" href="https://buymeacoffee.com/naroh" target="_blank" rel="noopener">Invítame a un café</a>
+    </div>
+  </div>
+</aside>
+
+<!-- 02 SANIDAD -->
+<section id="sanidad" style="background:#fff">
+  <div class="container">
+    <h2 class="section-title">02 · Sanidad como agujero principal</h2>
+    <h3>Sanidad concentra casi nueve de cada diez euros regularizados por gastos mal tramitados</h3>
+    <p class="lede">De los 2.219,6 millones tramitados como enriquecimiento injusto en 2024, el 88,5% corresponde a una sola conselleria. La Sindicatura traslada el detalle al informe de la Cuenta de la Administración, pero la lectura del dato ya es elocuente.</p>
+
+    <div class="chart">
+      <h5>Reparto del importe regularizado · 2.219,6 M€</h5>
+      <div class="ttl">Tres conselleries concentran prácticamente todo</div>
+      <div class="stack-legend">
+        <span style="color:var(--accent);font-weight:700">■ Sanitat 88,5%</span>
+        <span style="color:#7a7a7a;font-weight:700">■ Servicios Sociales 7,2%</span>
+        <span style="color:#b87900;font-weight:700">■ Hisenda 2,7%</span>
+        <span style="color:#aaa;font-weight:700">■ Resto 1,6%</span>
+      </div>
+      <div class="stack">
+        <div style="width:88.5%;background:var(--accent)">Sanitat · 88,5%</div>
+        <div style="width:7.2%;background:#7a7a7a">7,2%</div>
+        <div style="width:2.7%;background:#b87900;justify-content:center;padding:0">2,7%</div>
+        <div style="width:1.6%;background:#aaa"></div>
+      </div>
+      <div class="src" style="margin-top:14px;font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:var(--muted);text-transform:uppercase">Fuente · Sindicatura de Comptes · 596 expedientes de enriquecimiento injusto 2024 <a href="informe_gva_2024.pdf#page=7" target="_blank" style="color:var(--muted);text-decoration:none;border-bottom:1px dotted #c4bfb3">↗ pág. 7</a></div>
+    </div>
+
+    <p>No hablamos de un organismo periférico. La Sindicatura repite el aviso en la sección comparativa con ejercicios anteriores: el incremento de comunicaciones al Registro Oficial de Contratos de 2024 — de 1.877 contratos en 2023 a 26.947 en 2024 — está prácticamente todo movido por Sanitat, que aporta 26.133 contratos, el 97% del total<a class="pg" href="informe_gva_2024.pdf#page=27" target="_blank">pág. 27</a></p>
+
+    <div class="pull">
+      No es <em>“Sanidad se salta la ley”</em>. Es que la presión estructural sobre el gasto sanitario está saliendo por la vía de regularización en lugar de por la del procedimiento ordinario
+    </div>
+  </div>
+</section>
+
+<!-- 03 CONTRATAR PRIMERO -->
+<section id="contratar">
+  <div class="container">
+    <h2 class="section-title">03 · Contratar primero, justificar después</h2>
+    <h3>En contratos menores, los informes de necesidad se firman después de pedir las ofertas</h3>
+    <p class="lede">El artículo 101 de la LCSP exige calcular el valor estimado del contrato antes de licitar — es ese cálculo el que determina por qué procedimiento debe contratarse. La Sindicatura constata que en la mayoría de los expedientes menores revisados eso no ocurre.</p>
+
+    <div class="case">
+      <span class="tag">Resumen ejecutivo · contratos menores</span>
+      <h4>«En la mayoría de los expedientes revisados, los informes de necesidad se realizan con posterioridad a la solicitud de ofertas y sin calcular el valor estimado del contrato»</h4>
+      <p style="color:#333">La Sindicatura subraya que esta deficiencia no es formal: <strong>el valor estimado determina el procedimiento</strong> aplicable. Si no se calcula antes, no se puede comprobar si correspondía un contrato menor o uno ordinario<a class="pg" href="informe_gva_2024.pdf#page=3" target="_blank">pág. 3</a></p>
+    </div>
+
+    <p>Y la cosa no se queda en los menores. En los contratos no menores revisados aparece la misma lógica de justificar a posteriori, agrupada en una lista que la Sindicatura traslada literalmente al resumen del informe.</p>
+
+    <div class="families">
+      <div class="family">
+        <div class="ftag">A · Contratos mal justificados</div>
+        <div class="fttl">Necesidades, objeto y precio sin determinar con precisión</div>
+        <ul>
+          <li>La naturaleza y extensión de las necesidades a cubrir <strong>no se determinan con precisión</strong><a class="pg" href="informe_gva_2024.pdf#page=2" target="_blank">pág. 2</a></li>
+          <li>El objeto del contrato no está adecuadamente determinado<a class="pg" href="informe_gva_2024.pdf#page=3" target="_blank">pág. 3</a></li>
+          <li>Los contratos no contienen un precio cierto<a class="pg" href="informe_gva_2024.pdf#page=3" target="_blank">pág. 3</a></li>
+          <li>No está justificado que el presupuesto base de licitación se haya determinado conforme a precios de mercado<a class="pg" href="informe_gva_2024.pdf#page=3" target="_blank">pág. 3</a></li>
+          <li>No se cumplen los requisitos para la tramitación de urgencia<a class="pg" href="informe_gva_2024.pdf#page=3" target="_blank">pág. 3</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="pull">
+      Primero piden ofertas y después justifican la necesidad. <em>El expediente legitima a posteriori una decisión que ya estaba tomada</em>
+    </div>
+  </div>
+</section>
+
+<!-- 04 ADJUDICACIÓN -->
+<section id="adjudicacion" style="background:#fff">
+  <div class="container">
+    <h2 class="section-title">04 · Adjudicaciones con motivación insuficiente</h2>
+    <h3>Resoluciones de adjudicación que no permiten a un competidor recurrir con fundamento</h3>
+    <p class="lede">El artículo 151.1 de la LCSP exige que la resolución de adjudicación esté motivada y contenga la información necesaria para que los interesados puedan recurrir. Si no hay motivación, se apaga la posibilidad de defenderse.</p>
+
+    <div class="case">
+      <span class="tag">Conclusión 7 · Adjudicación · pág. 6</span>
+      <h4>«La resolución de adjudicación, su notificación y publicidad incumplen el artículo 151.1 de la LCSP, ya que no está motivada ni contiene la información necesaria que permita a los interesados interponer recurso suficientemente fundado»</h4>
+      <p style="color:#333">No se trata sólo de explicar quién gana: la Sindicatura señala que faltan también <strong>las características y ventajas de la proposición de la adjudicataria</strong> determinantes para haber seleccionado la oferta. Sin esa información, los demás licitadores no pueden cuestionar la decisión<a class="pg" href="informe_gva_2024.pdf#page=9" target="_blank">pág. 9</a></p>
+    </div>
+
+    <div class="callout">
+      <strong>Por qué importa.</strong> La motivación no es una cortesía administrativa. Es lo que hace que la adjudicación sea recurrible. Una resolución sin motivar reduce la transparencia hacia la ciudadanía y, sobre todo, impide la defensa real de los competidores que han quedado fuera.
+    </div>
+
+    <p>La Sindicatura añade un caso más fino en otra licitación revisada: un pliego que aplica un umbral del 50% sobre los criterios cualitativos, pero <strong>aplicándolo sólo a los criterios sujetos a juicio de valor</strong> y dejando fuera criterios cualitativos evaluables por fórmula. Dos empresas quedaron excluidas con esa interpretación, lo que la Sindicatura considera incumplimiento del artículo 146.3 de la LCSP<a class="pg" href="informe_gva_2024.pdf#page=43" target="_blank">pág. 43</a></p>
+  </div>
+</section>
+
+<!-- 05 EJECUCIÓN -->
+<section id="ejecucion">
+  <div class="container">
+    <h2 class="section-title">05 · Falta de control durante la ejecución</h2>
+    <h3>Condiciones especiales mal definidas, medios sin acreditar y subcontratación a oscuras</h3>
+    <p class="lede">Lo que ocurre después de adjudicar es tan importante como la propia adjudicación. La Sindicatura agrupa cuatro fallos recurrentes que afectan a la fase de ejecución y al control que debería ejercer la Generalitat sobre su contratista.</p>
+
+    <div class="families">
+      <div class="family">
+        <div class="ftag">B · Condiciones especiales de ejecución</div>
+        <div class="fttl">Definidas con poca precisión y sin penalidades reales</div>
+        <ul>
+          <li>Su definición o descripción en los pliegos es <strong>poco precisa o confusa</strong>, o está condicionada a una situación que, si no se cumple, deja la condición vacía de contenido<a class="pg" href="informe_gva_2024.pdf#page=7" target="_blank">pág. 7</a></li>
+          <li>«En la mayor parte de los expedientes revisados, las condiciones especiales de ejecución, los criterios de adjudicación y la adscripción de medios presentan incidencias importantes»<a class="pg" href="informe_gva_2024.pdf#page=2" target="_blank">pág. 2</a></li>
+        </ul>
+      </div>
+
+      <div class="family">
+        <div class="ftag">C · Adscripción de medios</div>
+        <div class="fttl">Pliegos que exigen perfiles concretos sin que conste documentación suficiente</div>
+        <ul>
+          <li>Los pliegos establecen como obligación esencial que el contratista ejecute el contrato con medios personales con determinada experiencia o formación y un porcentaje de dedicación, pero <strong>no consta documentación bastante</strong> que acredite que se cumple<a class="pg" href="informe_gva_2024.pdf#page=8" target="_blank">pág. 8</a></li>
+        </ul>
+      </div>
+
+      <div class="family">
+        <div class="ftag">D · Subcontratación · pág. 9</div>
+        <div class="fttl">Salvo dos expedientes, ninguno contiene la información que exige el artículo 215.2 LCSP</div>
+        <ul>
+          <li>«Excepto en dos de los expedientes revisados (expedientes 2 y 31), <strong>los demás no contienen la comunicación</strong> prevista en la letra b del artículo 215.2 LCSP sobre la intención del contratista de suscribir subcontratos»<a class="pg" href="informe_gva_2024.pdf#page=9" target="_blank">pág. 9</a></li>
+          <li>En un acuerdo marco revisado, la cláusula prohíbe la subcontratación con fines colusorios — y aun así el contratista declara su intención de subcontratar aproximadamente el 77% del importe a otra empresa licitadora<a class="pg" href="informe_gva_2024.pdf#page=12" target="_blank">pág. 12</a></li>
+        </ul>
+      </div>
+
+      <div class="family">
+        <div class="ftag">E · Conflictos de interés · art. 64 LCSP</div>
+        <div class="fttl">La mayoría de conselleries no aplica los procedimientos del artículo 64</div>
+        <ul>
+          <li>«La mayor parte de las conselleries no han aplicado los procedimientos para dar cumplimiento adecuado al artículo 64 de la LCSP», en cuanto a adoptar medidas para detectar y resolver posibles conflictos de interés del personal que participa en los procedimientos de contratación<a class="pg" href="informe_gva_2024.pdf#page=2" target="_blank">pág. 2</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="pull">
+      Se firma con condiciones que parecen exigentes y luego, en la práctica, <em>nadie comprueba que se cumplan</em>
+    </div>
+  </div>
+</section>
+
+<!-- 06 EMERGENCIA / DANA -->
+<section id="emergencia" style="background:#fff">
+  <div class="container">
+    <h2 class="section-title">06 · Emergencias y DANA</h2>
+    <h3>Rapidez sí, opacidad no</h3>
+    <p class="lede">A consecuencia de la DANA del 29 de octubre de 2024, la Generalitat formalizó 200 contratos de emergencia en 2024, frente a 9 en 2023. La emergencia permite contratar con celeridad, pero no exime de publicar la justificación.</p>
+
+    <div class="grid cols-2">
+      <div class="stat">
+        <div class="big accent">200</div>
+        <div class="lbl">contratos de <strong>tramitación de emergencia</strong> en 2024 — el incremento se debe a los contratos vinculados a la DANA</div>
+        <div class="src"><a href="informe_gva_2024.pdf#page=30" target="_blank">↗ pág. 30</a></div>
+      </div>
+      <div class="stat">
+        <div class="big">9</div>
+        <div class="lbl">contratos de emergencia en 2023 — la emergencia pasa de ser <strong>excepcional a representar el 11,9% del importe</strong> total adjudicado</div>
+        <div class="src"><a href="informe_gva_2024.pdf#page=29" target="_blank">↗ pág. 29</a></div>
+      </div>
+    </div>
+
+    <div class="case">
+      <span class="tag">Conclusión 11 · Contratación de emergencia</span>
+      <h4>No se publicaron en el perfil de contratante las memorias justificativas del procedimiento utilizado ni las modificaciones de las resoluciones de adjudicación</h4>
+      <p style="color:#333;margin-bottom:14px">Expedientes señalados por la Sindicatura: <strong>números 29 y 30 de Sanitat, número 32 de Innovació y número 34 d’Agricultura</strong> sin memoria justificativa publicada. Y números 26 de Medi Ambient y 32 de Innovació sin publicación de las modificaciones de adjudicación<a class="pg" href="informe_gva_2024.pdf#page=10" target="_blank">pág. 10</a></p>
+      <p style="color:#333">Además, en dos expedientes (número 7 de Educació y número 10 de Sanitat) <strong>no se publicaron los informes jurídicos de la Abogacía sobre el PCAP y sobre la declaración de emergencia</strong>, incumpliendo el artículo 16.2 de la Ley 1/2022<a class="pg" href="informe_gva_2024.pdf#page=42" target="_blank">pág. 42</a></p>
+    </div>
+
+    <div class="callout">
+      <strong>La Sindicatura recuerda</strong> que la transparencia descrita es especialmente relevante en los contratos de emergencia incluidos los de la DANA, que por su carácter de inmediatez y celeridad escapan de los controles ordinarios. La excepción a la regla general no puede serlo también a la publicidad posterior<a class="pg" href="informe_gva_2024.pdf#page=39" target="_blank">pág. 39</a>
+    </div>
+
+    <div class="pull">
+      La emergencia permite contratar rápido. <em>No permite opacidad posterior</em>
+    </div>
+  </div>
+</section>
+
+<!-- 07 COMUNICACIÓN -->
+<section id="comunicacion">
+  <div class="container">
+    <h2 class="section-title">07 · La Generalitat tampoco comunica todo lo que debe</h2>
+    <h3>De cada diez contratos por encima del umbral, sólo cuatro llegan a la Sindicatura</h3>
+    <p class="lede">Las conselleries están obligadas a comunicar al Registro Oficial de Contractes de la Generalitat (ROCG) y a la propia Sindicatura los contratos que superan determinados umbrales. La Sindicatura comprueba que esa comunicación falla por dos lados: en plazo y en cobertura.</p>
+
+    <div class="grid cols-3">
+      <div class="stat">
+        <div class="big accent">212<span style="color:var(--muted);font-weight:500;font-size:24px"> / 483</span></div>
+        <div class="lbl">contratos por encima del umbral comunicados a la Sindicatura sobre el total que debían serlo</div>
+        <div class="src"><a href="informe_gva_2024.pdf#page=18" target="_blank">↗ pág. 18</a></div>
+      </div>
+      <div class="stat">
+        <div class="big accent">4<span style="color:var(--muted);font-weight:500;font-size:24px"> / 26</span></div>
+        <div class="lbl">contratos no menores de la muestra revisada que <strong>no fueron comunicados</strong> a la Sindicatura en los términos aplicables (expedientes 10, 11, 31 y 36)</div>
+        <div class="src"><a href="informe_gva_2024.pdf#page=18" target="_blank">↗ pág. 18</a></div>
+      </div>
+      <div class="stat">
+        <div class="big accent">98,4<small>%</small></div>
+        <div class="lbl">de los contratos formalizados en 2024 se inscribieron en el ROCG <strong>fuera del plazo de 15 días</strong> establecido en la normativa reguladora</div>
+        <div class="src"><a href="informe_gva_2024.pdf#page=17" target="_blank">↗ pág. 17</a></div>
+      </div>
+    </div>
+
+    <p>En contratos menores el retraso en comunicar al ROCG afecta al 52,8% de los expedientes — un porcentaje alto, aunque la Sindicatura reconoce una mejora respecto al 74,3% de 2023<a class="pg" href="informe_gva_2024.pdf#page=27" target="_blank">pág. 27</a></p>
+
+    <div class="pull">
+      No solo contratan mal. <em>Tampoco informan bien de lo contratado</em>
+    </div>
+  </div>
+</section>
+
+<!-- 08 REINCIDENCIA -->
+<section id="reincidencia" style="background:#fff">
+  <div class="container">
+    <h2 class="section-title">08 · La Sindicatura lleva años avisando</h2>
+    <h3>De las 26 recomendaciones del informe anterior, solo 8 se han aplicado</h3>
+    <p class="lede">El informe no suena a primera advertencia, sino a parte de reincidencia. La Sindicatura realiza un seguimiento de las recomendaciones que ya hizo en el informe del ejercicio anterior y comprueba expediente a expediente cuáles se han atendido y cuáles no.</p>
+
+    <div class="chart">
+      <h5>Seguimiento de las 26 recomendaciones del informe anterior</h5>
+      <div class="ttl">Solo una de cada tres se aplica · doce siguen pendientes</div>
+      <div class="bar-row">
+        <div class="lbl">Aplicadas</div>
+        <div class="bar good"><span style="width:30.77%"></span></div>
+        <div class="val" style="color:var(--good)">8 / 26</div>
+      </div>
+      <div class="bar-row">
+        <div class="lbl">Pendientes en alguna conselleria</div>
+        <div class="bar"><span style="width:46.15%"></span></div>
+        <div class="val">12 / 26</div>
+      </div>
+      <div class="bar-row">
+        <div class="lbl">No atendidas por ninguna conselleria</div>
+        <div class="bar"><span style="width:23.08%;background:#7a2014"></span></div>
+        <div class="val">6 / 26</div>
+      </div>
+      <div class="src" style="margin-top:14px;font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:var(--muted);text-transform:uppercase">Fuente · Apéndice 3 · Cuadro 21 <a href="informe_gva_2024.pdf#page=20" target="_blank" style="color:var(--muted);text-decoration:none;border-bottom:1px dotted #c4bfb3">↗ pág. 20</a></div>
+    </div>
+
+    <p>La Sindicatura es explícita sobre lo que significa cada categoría: una recomendación queda como <strong>«no aplicada»</strong> cuando el ente fiscalizado no ha actuado para corregir las deficiencias o lo ha hecho insuficientemente, de manera que «la recomendación sigue sin aplicarse»<a class="pg" href="informe_gva_2024.pdf#page=52" target="_blank">pág. 52</a>. Y refleja por escrito que en la revisión de los expedientes de 2024 <strong>«se observan incidencias para mantener esta recomendación»</strong><a class="pg" href="informe_gva_2024.pdf#page=54" target="_blank">pág. 54</a></p>
+
+    <div class="pull">
+      La Sindicatura no está descubriendo un problema nuevo. <em>Está documentando que se repite</em>
+    </div>
+  </div>
+</section>
+
+<!-- RECAP TABLE -->
+<section style="background:var(--bg)">
+  <div class="container">
+    <h2 class="section-title">Recapitulando</h2>
+    <h3>Los hallazgos en una sola tabla</h3>
+    <table class="findings">
+      <thead>
+        <tr>
+          <th style="width:120px">Dato</th>
+          <th>Hallazgo</th>
+          <th style="width:90px">Página</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="pct">596</td>
+          <td>Expedientes de resarcimiento por enriquecimiento injusto tramitados en 2024 — gastos ejecutados prescindiendo del procedimiento legal</td>
+          <td class="pgcell"><a href="informe_gva_2024.pdf#page=7" target="_blank">↗ 7</a></td>
+        </tr>
+        <tr>
+          <td class="pct">2.219,6 M€</td>
+          <td>Importe total tramitado por esa vía en un único ejercicio</td>
+          <td class="pgcell"><a href="informe_gva_2024.pdf#page=7" target="_blank">↗ 7</a></td>
+        </tr>
+        <tr>
+          <td class="pct">88,5%</td>
+          <td>Del importe corresponde a la Conselleria de Sanitat (7,2% Servicios Sociales · 2,7% Hisenda)</td>
+          <td class="pgcell"><a href="informe_gva_2024.pdf#page=7" target="_blank">↗ 7</a></td>
+        </tr>
+        <tr>
+          <td class="pct">Mayoría</td>
+          <td>De los expedientes menores revisados, los informes de necesidad se hacen después de pedir ofertas y sin calcular el valor estimado (art. 101 LCSP)</td>
+          <td class="pgcell"><a href="informe_gva_2024.pdf#page=3" target="_blank">↗ 3</a></td>
+        </tr>
+        <tr>
+          <td class="pct">Art. 151.1</td>
+          <td>Resoluciones de adjudicación sin motivación suficiente para permitir un recurso fundado contra la decisión de adjudicación</td>
+          <td class="pgcell"><a href="informe_gva_2024.pdf#page=9" target="_blank">↗ 9</a></td>
+        </tr>
+        <tr>
+          <td class="pct">2 / muestra</td>
+          <td>Solo dos expedientes (2 y 31) contienen la información sobre subcontratación que exige el artículo 215.2 LCSP — los demás, no</td>
+          <td class="pgcell"><a href="informe_gva_2024.pdf#page=9" target="_blank">↗ 9</a></td>
+        </tr>
+        <tr>
+          <td class="pct">200</td>
+          <td>Contratos de emergencia formalizados en 2024 — frente a 9 en 2023, incremento debido a la DANA</td>
+          <td class="pgcell"><a href="informe_gva_2024.pdf#page=30" target="_blank">↗ 30</a></td>
+        </tr>
+        <tr>
+          <td class="pct">11,9%</td>
+          <td>Peso de la tramitación de emergencia sobre el importe total adjudicado en 2024 (0,1% en 2023)</td>
+          <td class="pgcell"><a href="informe_gva_2024.pdf#page=29" target="_blank">↗ 29</a></td>
+        </tr>
+        <tr>
+          <td class="pct">6 expedientes</td>
+          <td>Contratos de emergencia (Sanitat, Innovació, Agricultura, Medi Ambient) sin publicación en el perfil de contratante de memorias o modificaciones de adjudicación</td>
+          <td class="pgcell"><a href="informe_gva_2024.pdf#page=10" target="_blank">↗ 10</a></td>
+        </tr>
+        <tr>
+          <td class="pct">2 DANA</td>
+          <td>Expedientes (Educació nº 7 y Sanitat nº 10) sin publicación de los informes jurídicos de la Abogacía sobre el PCAP y la declaración de emergencia</td>
+          <td class="pgcell"><a href="informe_gva_2024.pdf#page=42" target="_blank">↗ 42</a></td>
+        </tr>
+        <tr>
+          <td class="pct">212 / 483</td>
+          <td>Contratos por encima del umbral comunicados a la Sindicatura por las conselleries sobre el total que debían serlo</td>
+          <td class="pgcell"><a href="informe_gva_2024.pdf#page=18" target="_blank">↗ 18</a></td>
+        </tr>
+        <tr>
+          <td class="pct">4 / 26</td>
+          <td>Contratos no menores revisados que superaban umbrales y no fueron comunicados en los términos de la instrucción aplicable (expedientes 10, 11, 31 y 36)</td>
+          <td class="pgcell"><a href="informe_gva_2024.pdf#page=18" target="_blank">↗ 18</a></td>
+        </tr>
+        <tr>
+          <td class="pct">98,4%</td>
+          <td>Contratos formalizados en 2024 inscritos en el ROCG fuera del plazo de 15 días</td>
+          <td class="pgcell"><a href="informe_gva_2024.pdf#page=17" target="_blank">↗ 17</a></td>
+        </tr>
+        <tr>
+          <td class="pct">52,8%</td>
+          <td>Contratos menores comunicados al ROCG fuera del plazo del artículo 4 de la Orden 1/2019 (74,3% en 2023)</td>
+          <td class="pgcell"><a href="informe_gva_2024.pdf#page=27" target="_blank">↗ 27</a></td>
+        </tr>
+        <tr>
+          <td class="pct">8 / 26</td>
+          <td>Recomendaciones del informe anterior que han sido aplicadas — 12 pendientes y 6 no atendidas por ninguna conselleria</td>
+          <td class="pgcell"><a href="informe_gva_2024.pdf#page=20" target="_blank">↗ 20</a></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- CLOSER -->
+<div class="closer">
+  <div class="container">
+    <h2 class="section-title">Cierre</h2>
+    <h3>Por qué importa más allá del trámite</h3>
+    <p>No necesariamente es corrupción, pero lo que sí es es <em>contratación fuera de carril</em>: una Administración que normaliza pagar por vías de regularización, justificar tarde, motivar poco y corregir menos.</p>
+    <p>2.219,6 millones tramitados sin seguir el procedimiento legal en un solo ejercicio no son un descuido administrativo. Son la consecuencia documental de unas conselleries — empezando por Sanitat — que ejecutan gasto por encima del crédito autorizado y luego buscan el cauce para regularizarlo.</p>
+    <p style="margin-top:36px;font-family:var(--serif);font-size:24px;color:#fff;font-weight:600;line-height:1.35">El informe no suena a primera advertencia. <em>Suena a parte de reincidencia</em></p>
+  </div>
+</div>
+
+<footer>
+  <div class="container">
+    <p>Análisis basado en el <strong style="color:#333">Informe d’auditoria de compliment de legalitat en la contractació de l’Administració de la Generalitat · Exercici 2024</strong> de la Sindicatura de Comptes de la Comunitat Valenciana</p>
+    <p style="margin-top:14px"><a class="src-link" href="informe_gva_2024.pdf" target="_blank">↗ informe_gva_2024.pdf</a></p>
+
+    <div class="credits">
+      <div><strong>Autor</strong> · David Fernández Sancho</div>
+      <div><strong>Asistencia de IA</strong> · Gemma 4 · GPT 5.5 · Claude Opus 4.7</div>
+      <div style="margin-top:10px"><strong>Apoya el trabajo</strong> · <a href="https://www.patreon.com/cw/naroh/membership" target="_blank" rel="noopener">Patreon</a> · <a href="https://buymeacoffee.com/naroh" target="_blank" rel="noopener">Buy Me a Coffee</a></div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
